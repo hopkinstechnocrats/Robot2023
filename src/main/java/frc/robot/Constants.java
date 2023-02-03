@@ -132,4 +132,9 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final class ElevatorConstants {
+    public static final int kSparkMaxAbsoluteEncoderID = 1;
+    public static final int k
+  }
 }

@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
@@ -17,6 +20,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.TestFixtureConstants;
 import lib.Loggable;
@@ -25,10 +29,12 @@ import badlog.lib.BadLog;
 
 public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   /** Creates a new SingleModuleTestFixture. */
+  public static final CANSparkMaxLowLevel.MotorType kBrushless;
 
-  private final WPI_TalonFX driveMotor = new WPI_TalonFX(TestFixtureConstants.kDriveMotorPort);
-  private final WPI_TalonFX turningMotor = new WPI_TalonFX(TestFixtureConstants.kTurningMotorPort);
-  private final CANCoder encoder = new CANCoder(TestFixtureConstants.kCANCoderID);
+  private final CANSparkMax extendLeftMotor = new CANSparkMax(1, kBrushless);
+  private final CANSparkMax extendRightMotor = new CANSparkMax(2, kBrushless);
+  private final CANSparkMax winchMotor = new CANSparkMax(3, kBrushless);
+  private final SparkMaxAbsoluteEncoder encoder = new SparkMaxAbsoluteEncoder(winchMotor, );
   
       
 
