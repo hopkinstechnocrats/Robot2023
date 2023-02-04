@@ -134,7 +134,30 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final int kSparkMaxAbsoluteEncoderID = 1;
-    public static final int k
+    public static final class ExtenderConstatants{
+      public static final int kPrimaryMotorID = 1;
+      public static final int kSecondaryMotorID = 2;
+
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = 1;
+      public static final double kMinOutput = -1;
+    }
+    
+    
+    public static final class WinchConstants {
+      public static final int kMotorID = 3;
+
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = 1;
+      public static final double kMinOutput = -1;
+    }
   }
 }
