@@ -27,7 +27,6 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.TestFixtureConstants;
 import lib.Loggable;
-import badlog.lib.BadLog;
 
 
 public class ElevatorSubsystem extends SubsystemBase implements Loggable {
