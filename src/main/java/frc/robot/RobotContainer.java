@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.NEOTestSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -40,6 +41,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final NEOTestSubsystem m_NEOTest = new NEOTestSubsystem();
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -78,6 +80,9 @@ public class RobotContainer {
     //                     m_driverController.getLeftY(), m_driverController.getRightY()),
     //             singleModuleTestFixture)
     // );
+    m_NEOTest.setDefaultCommand(
+        new RunCommand(() -> m_NEOTest.SpinNEO(0), m_NEOTest)
+    );
   }
 
   /**
@@ -90,7 +95,7 @@ public class RobotContainer {
       JoystickButton AButton = new JoystickButton(m_driverController, 1);
       JoystickButton BButton = new JoystickButton(m_driverController, 2);
       JoystickButton XButton = new JoystickButton(m_driverController, 3);
-      // JoystickButton DButton = new JoystickButton(m_driverController, 4);
+      JoystickButton YButton = new JoystickButton(m_driverController, 4);
       
       // 
       POVButton DPadTop = new POVButton(m_driverController, 90);
@@ -100,6 +105,7 @@ public class RobotContainer {
 
       AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
+      YButton.whileTrue(new RunCommand(() -> m_NEOTest.SpinNEO(), m_NEOTest));
 
       //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
       XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
