@@ -105,7 +105,7 @@ public class RobotContainer {
 
       AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
-      YButton.whileTrue(new RunCommand(() -> m_NEOTest.SpinNEO(), m_NEOTest));
+      YButton.whileTrue(new RunCommand(() -> m_NEOTest.SpinNEO(0.25), m_NEOTest));
 
       //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
       XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
