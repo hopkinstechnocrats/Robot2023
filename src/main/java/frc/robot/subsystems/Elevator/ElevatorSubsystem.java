@@ -55,6 +55,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
     m_extendSecondaryMotor.restoreFactoryDefaults();
     m_winchMotor.restoreFactoryDefaults();
 
+    m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
+
     if(m_manual){
       
     }
@@ -143,6 +145,10 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
     return reqEncoderTicksRotation;
 }
   
+public void MoveElevator(double extendSpeed, double winchSpeed){
+  m_extendPrimaryMotor.set(extendSpeed);
+  m_winchMotor.set(winchSpeed);
+}
 
 
   @Override

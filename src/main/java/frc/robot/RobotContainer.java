@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -40,15 +41,18 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   //private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem(true);
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
       //Start logging
       DataLogManager.start();
       DataLog log = DataLogManager.getLog();
@@ -72,6 +76,12 @@ public class RobotContainer {
                     3*m_driverController.getRightX(),
                m_driverController.getRightTriggerAxis()), m_robotDrive)); // use this to change from field oriented to non-field oriented
 */
+    m_elevator.setDefaultCommand(
+        new RunCommand(
+            () ->
+            m_elevator.MoveElevator(0.2*m_operatorController.getLeftY(), 0.2*m_operatorController.getRightY())
+            , m_elevator)
+    );
     // singleModuleTestFixture.setDefaultCommand(
     //         new RunCommand(
     //             () -> 
