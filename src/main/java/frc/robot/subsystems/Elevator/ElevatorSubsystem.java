@@ -40,34 +40,46 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   private final RelativeEncoder m_extendLeftMotorBuiltInEncoder = m_extendPrimaryMotor.getEncoder();
   //private final RelativeEncoder m_extendRightMotorBuiltInEncoder = m_extendRightMotor.getEncoder();
   private final RelativeEncoder m_winchMotorBuiltInEncoder = m_winchMotor.getEncoder();
+
+  private boolean m_manual;
       
+
   //Using Left Motor As Primary Motor
   private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
   private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
 
-  public ElevatorSubsystem(){
-    //Clear pre-sets? - AJ
+  public ElevatorSubsystem(boolean manual){
+    m_manual = manual;
+    
     m_extendPrimaryMotor.restoreFactoryDefaults();
     m_extendSecondaryMotor.restoreFactoryDefaults();
     m_winchMotor.restoreFactoryDefaults();
 
-    m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
-    m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
-
-    m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
-    m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstatants.kI);
-    m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstatants.kD);
-    m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstatants.kFF);
-    m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstatants.kIz);
-    m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
-
-    m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
-    m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
-    m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);
-    m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
-    m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
-    m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
-
+    if(m_manual){
+      
+    }
+    else{
+     
+      m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
+      m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
+  
+      m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
+      m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstatants.kI);
+      m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstatants.kD);
+      m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstatants.kFF);
+      m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstatants.kIz);
+      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
+  
+      m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
+      m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
+      m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);
+      m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
+      m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
+      m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
+  
+    }
+    //Clear pre-sets? - AJ
+    
   }
 
 
