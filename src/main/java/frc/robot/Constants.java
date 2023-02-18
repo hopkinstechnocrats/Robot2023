@@ -30,20 +30,20 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 1;
-    public static final int kRearLeftDriveMotorPort = 4;
-    public static final int kFrontRightDriveMotorPort = 2;
+    public static final int kFrontLeftDriveMotorPort = 7;
+    public static final int kRearLeftDriveMotorPort = 5;
+    public static final int kFrontRightDriveMotorPort = 1;
     public static final int kRearRightDriveMotorPort = 3;
 
-    public static final int kFrontLeftTurningMotorPort = 5;
-    public static final int kRearLeftTurningMotorPort = 8;
-    public static final int kFrontRightTurningMotorPort = 6;
-    public static final int kRearRightTurningMotorPort = 7;
+    public static final int kFrontLeftTurningMotorPort = 8;
+    public static final int kRearLeftTurningMotorPort = 6;
+    public static final int kFrontRightTurningMotorPort = 2;
+    public static final int kRearRightTurningMotorPort = 4;
 
-    public static final int kFrontLeftTurningEncoderPort = 2;
+    public static final int kFrontLeftTurningEncoderPort = 4;
     public static final int kRearLeftTurningEncoderPort = 3;
-    public static final int kFrontRightTurningEncoderPort = 0;
-    public static final int kRearRightTurningEncoderPort = 1;
+    public static final int kFrontRightTurningEncoderPort = 1;
+    public static final int kRearRightTurningEncoderPort = 2;
 
     public static final boolean kFrontLeftTurningEncoderReversed = true;
     public static final boolean kRearLeftTurningEncoderReversed = false;
@@ -83,8 +83,6 @@ public final class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
     public static final double kWheelHeight = .1;//meters
 
-    public static final double kMetersPerRevolution = kWheelHeight * Math.PI; // Circumfrence
-
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kBoostModifier = 1;
     
@@ -95,20 +93,20 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final double kFrontRightOffset = 0.8934;
-    public static final double kFrontLeftOffset = 0.9793;
-    public static final double kRearRightOffset = 0.8768;
-    public static final double kRearLeftOffset = 0.3515;
+    public static final double kFrontRightOffset = -0.07516505860639658; // -2.998932440316429;
+    public static final double kFrontLeftOffset =1.6520973085528357 + 0.4678641403051204; // 0.796136928912 - Math.PI;
+    public static final double kRearRightOffset = 0.796136928912 + 0.034; // -1.0507768370;
+    public static final double kRearLeftOffset = 0.15339807878856412; //(-0.069029 + Math.PI) % Math.PI;
   }
 
   public static final class ModuleConstants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 0.5 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 0.5 * Math.PI;
-    public static double kUModuleTurningController = 1.8;
-    public static double kPModuleTurningController = .15*kUModuleTurningController;
+    public static double kUModuleTurningController = 3;
+    public static double kPModuleTurningController = .5*kUModuleTurningController;
     public static double tUModuleTurningController = .5; // Seconds
-    public static double kIModuleTurningController =0 * (.4*kUModuleTurningController)/tUModuleTurningController;
-    public static double kDModuleTurningController = 0 * 0.0666666666*kUModuleTurningController*tUModuleTurningController;
+    public static double kIModuleTurningController = 0*(.54*kUModuleTurningController)/tUModuleTurningController;
+    public static double kDModuleTurningController = 0*0.666666666*kUModuleTurningController*tUModuleTurningController;
 
     public static final double kPModuleDriveController = 0; // 0.15;
     public static final double kDModuleDriveController = 0;
@@ -141,33 +139,35 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+    public static final double kAutoDriveDistance = 1.5;
+    //meters
   }
 
   public static final class ElevatorConstants {
-    public static final class ExtenderConstatants{
-      public static final int kPrimaryMotorID = 1;
-      public static final int kSecondaryMotorID = 2;
-
-      public static final double kP = 1;
-      public static final double kI = 0;
-      public static final double kD = 0;
-      public static final double kFF = 0;
-      public static final double kIz = 0;
-      public static final double kMaxOutput = 1;
-      public static final double kMinOutput = -1;
-    }
+    public static final double kIntakeOffsetFromArm = 181818181;
+    //p1 in the drawing
+    //TODO: units?
+    public static final double kArmLength = 777777777;
+    //a in the drawing
+    //TODO: units?
+    public static final double kPulleyHeight = 9000.001;
+    //h
+    //TODO: ^^
+    public static final double kPulleySidewaysOffset = 69;
+    //p3
+    //TODO: ^^
+    public static final double kArmOffsetFromRope = 420;
+    //p4
+    //TODO: ^^
+    //there is no p2
     
-    
-    public static final class WinchConstants {
-      public static final int kMotorID = 3;
-
-      public static final double kP = 1;
-      public static final double kI = 0;
-      public static final double kD = 0;
-      public static final double kFF = 0;
-      public static final double kIz = 0;
-      public static final double kMaxOutput = 1;
-      public static final double kMinOutput = -1;
-    }
+    public static final double kWinchDiameter = 0;
+    //TODO: ^^
+    public static final double kGearRatioRotation = 4;
+    //The ratio from the Input to Output - how many Motor turns will result in one Output turn
+    //TODO: ^^
+    public static final int kEncoderTicksPerRevRotation = 0;
+    //TODO
   }
 }
