@@ -10,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -114,7 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-      getHeading(),
+      m_gyro.getRotation2d(),
       new SwerveModulePosition[] {
         m_frontLeft.getPosition(),
         m_frontRight.getPosition(),
@@ -125,6 +126,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.periodic();
     m_rearRight.periodic();
     SmartDashboard.putNumber("Heading", getHeading().getDegrees());
+    SmartDashboard.putNumber("Roll", getRoll());
+    SmartDashboard.putNumber("Pitch", getPitch());
     m_field.setRobotPose(getPose());
   }
 
@@ -277,12 +280,31 @@ public class DriveSubsystem extends SubsystemBase {
     return -1* m_gyro.getRoll();
   }
 
+  public float getPitch() {
+    return m_gyro.getPitch();
+  }
+
+  public float getYaw() {
+    return m_gyro.getYaw();
+  }
+
   //Flips front of robot
   public void makeBackwards(boolean GOGOGOGOGOGOGO) {
     if (GOGOGOGOGOGOGO){
       negate = -1;
     } else{
       negate = 1;
+    }
+  }
+
+  public void balance() {
+    if (m_gyro.getPitch() < -AutoConstants.kDeadzoneAngle) {
+      drive(DriveConstants.kBalanceDriveSpeed, 0, 0, 0);
+    } else if (m_gyro.getPitch() > AutoConstants.kDeadzoneAngle) {
+      drive(-DriveConstants.kBalanceDriveSpeed, 0, 0, 0);
+    } else {
+      //it's flat
+      defence();
     }
   }
 

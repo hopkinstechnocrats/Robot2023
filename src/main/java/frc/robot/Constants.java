@@ -83,6 +83,8 @@ public final class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
     public static final double kWheelHeight = .1;//meters
 
+    public static final double kMetersPerRevolution = kWheelHeight * Math.PI; // Circumfrence
+
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kBoostModifier = 1;
     
@@ -97,6 +99,8 @@ public final class Constants {
     public static final double kFrontLeftOffset =1.6520973085528357 + 0.4678641403051204; // 0.796136928912 - Math.PI;
     public static final double kRearRightOffset = 0.796136928912 + 0.034; // -1.0507768370;
     public static final double kRearLeftOffset = 0.15339807878856412; //(-0.069029 + Math.PI) % Math.PI;
+
+    public static final double kBalanceDriveSpeed = 1;
   }
 
   public static final class ModuleConstants {
@@ -142,32 +146,67 @@ public final class Constants {
 
     public static final double kAutoDriveDistance = 1.5;
     //meters
+
+    public static final double kDeadzoneAngle = 5;
   }
 
   public static final class ElevatorConstants {
-    public static final double kIntakeOffsetFromArm = 181818181;
-    //p1 in the drawing
-    //TODO: units?
-    public static final double kArmLength = 777777777;
-    //a in the drawing
-    //TODO: units?
-    public static final double kPulleyHeight = 9000.001;
-    //h
-    //TODO: ^^
-    public static final double kPulleySidewaysOffset = 69;
-    //p3
-    //TODO: ^^
-    public static final double kArmOffsetFromRope = 420;
-    //p4
-    //TODO: ^^
-    //there is no p2
+
+    public static final class EquationConstants {
+      public static final double kIntakeOffsetFromArm = 181818181;
+      //p1 in the drawing
+      //TODO: units?
+      public static final double kArmLength = 777777777;
+      //a in the drawing
+      //TODO: units?
+      public static final double kPulleyHeight = 9000.001;
+      //h
+      //TODO: ^^
+      public static final double kPulleySidewaysOffset = 69;
+      //p3
+      //TODO: ^^
+      public static final double kArmOffsetFromRope = 420;
+      //p4
+      //TODO: ^^
+      //there is no p2
+      
+      public static final double kWinchDiameter = 0;
+      //TODO: ^^
+      public static final double kGearRatioRotation = 4;
+      //The ratio from the Input to Output - how many Motor turns will result in one Output turn
+      //TODO: ^^
+      public static final int kEncoderTicksPerRevRotation = 0;
+      //TODO
+    }
+
+    public static final class ExtenderConstatants{
+      public static final int kPrimaryMotorID = 1;
+      public static final int kSecondaryMotorID = 2;
     
-    public static final double kWinchDiameter = 0;
-    //TODO: ^^
-    public static final double kGearRatioRotation = 4;
-    //The ratio from the Input to Output - how many Motor turns will result in one Output turn
-    //TODO: ^^
-    public static final int kEncoderTicksPerRevRotation = 0;
-    //TODO
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = 1;
+      public static final double kMinOutput = -1;
+    }
+
+
+    public static final class WinchConstants {
+      public static final int kMotorID = 3;
+
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = 1;
+      public static final double kMinOutput = -1;
+    }
+
   }
+
+
+
 }
