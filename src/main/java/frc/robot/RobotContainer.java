@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  //private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -60,6 +60,7 @@ public class RobotContainer {
 
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
+    /*
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -70,7 +71,7 @@ public class RobotContainer {
                     3*m_driverController.getLeftX(),
                     3*m_driverController.getRightX(),
                m_driverController.getRightTriggerAxis()), m_robotDrive)); // use this to change from field oriented to non-field oriented
-
+*/
     // singleModuleTestFixture.setDefaultCommand(
     //         new RunCommand(
     //             () -> 
@@ -98,17 +99,19 @@ public class RobotContainer {
       POVButton DPadBottom = new POVButton(m_driverController, 270);
       POVButton DPadLeft = new POVButton(m_driverController, 0);
 
-      AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-      BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
+      //AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      //BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
 
       //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
-      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
+      /*XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
           new InstantCommand(() -> m_robotDrive.setBrakeMode(true)))
           );
       XButton.onFalse(new InstantCommand(() -> m_robotDrive.setBrakeMode(false)));
+      */
       // DButton.whenPressed(new InstantCommand(() -> singleModuleTestFixture.setAngle(new Rotation2d(0, -1))));
       
       //AutoRotate to desired heading
+      /*
       DPadTop.whileTrue(new RunCommand(() -> m_robotDrive.autoRotate(-1*m_driverController.getLeftY(),
       -1*m_driverController.getLeftX(),
       0,
@@ -129,7 +132,7 @@ public class RobotContainer {
       -1*m_driverController.getLeftX(),
       -Math.PI/2,
       m_driverController.getRightTriggerAxis()), m_robotDrive));
-
+*/
   }
 
   /**
@@ -137,6 +140,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  /*
   public Command getAutonomousCommand() {
     // Create config for trajectory
     TrajectoryConfig config =
@@ -164,7 +168,7 @@ public class RobotContainer {
         new ProfiledPIDController(
             AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
+ 
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
             exampleTrajectory,
@@ -183,5 +187,6 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, 0));
-  }
+ 
+    }*/
 }

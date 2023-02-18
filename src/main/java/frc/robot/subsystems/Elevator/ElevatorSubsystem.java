@@ -136,8 +136,8 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
   @Override
   public void periodic() {
     //TODO change set reference values to come from a different value
-    m_extendPIDController.setReference(10, CANSparkMax.ControlType.kPosition);
-    m_winchPIDController.setReference(10, CANSparkMax.ControlType.kPosition);
+    m_extendPIDController.setReference(10, CANSparkMax.ControlType.kVelocity);
+    m_winchPIDController.setReference(10, CANSparkMax.ControlType.kVelocity);
   }
 
   public void logInit() {
