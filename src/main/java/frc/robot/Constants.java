@@ -125,6 +125,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int KOperatorControllerPort = 1;
   }
 
   public static final class AutoConstants {
@@ -141,5 +142,21 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+  }
+
+  public static final class ManipulatorConstants {
+    public static final int kMotorPort = 12;
+    public static final double kGearRatio = 1;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final double kCubeSpeedIn = 10;
+    public static final double kCubeSpeedOut = -10;
+    public static final double kConeSpeedIn = 5;
+    public static final double kConeSpeedOut = -5;
+    public static final double kMaxSpeedRPM = 20;
   }
 }

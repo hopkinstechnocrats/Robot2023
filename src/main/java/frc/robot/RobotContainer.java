@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -40,11 +41,13 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ManipulatorSubsystem m_manipulator = new ManipulatorSubsystem();
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.KOperatorControllerPort);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,15 +72,9 @@ public class RobotContainer {
                     3*m_driverController.getLeftY(),
                     3*m_driverController.getLeftX(),
                     3*m_driverController.getRightX(),
-               m_driverController.getRightTriggerAxis()), m_robotDrive)); // use this to change from field oriented to non-field oriented
+               m_driverController.getRightTriggerAxis()), m_robotDrive));
 
-    // singleModuleTestFixture.setDefaultCommand(
-    //         new RunCommand(
-    //             () -> 
-    //                 singleModuleTestFixture.setState(
-    //                     m_driverController.getLeftY(), m_driverController.getRightY()),
-    //             singleModuleTestFixture)
-    // );
+    m_manipulator.setDefaultCommand(new RunCommand(() -> m_manipulator.NoSpin(), m_manipulator));
   }
 
   /**
@@ -90,7 +87,7 @@ public class RobotContainer {
       JoystickButton AButton = new JoystickButton(m_driverController, 1);
       JoystickButton BButton = new JoystickButton(m_driverController, 2);
       JoystickButton XButton = new JoystickButton(m_driverController, 3);
-      // JoystickButton DButton = new JoystickButton(m_driverController, 4);
+      JoystickButton YButton = new JoystickButton(m_driverController, 4);
       
       // 
       POVButton DPadTop = new POVButton(m_driverController, 90);
@@ -129,6 +126,21 @@ public class RobotContainer {
       -1*m_driverController.getLeftX(),
       -Math.PI/2,
       m_driverController.getRightTriggerAxis()), m_robotDrive));
+
+      
+      JoystickButton OAButton = new JoystickButton(m_operatorController, 1);
+      JoystickButton OBButton = new JoystickButton(m_operatorController, 2);
+      JoystickButton OXButton = new JoystickButton(m_operatorController, 3);
+      JoystickButton OYButton = new JoystickButton(m_operatorController, 4);
+
+      //Spin Cone out
+      OAButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
+      //Spin Cone in
+      OBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
+      //Spin Cube out
+      OXButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator)); 
+      //Spin Cube in
+      OYButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator)); 
 
   }
 
