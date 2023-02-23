@@ -101,11 +101,8 @@ public class RobotContainer {
       AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
 
-      //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
-      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
-          new InstantCommand(() -> m_robotDrive.setBrakeMode(true)))
-          );
-      XButton.onFalse(new InstantCommand(() -> m_robotDrive.setBrakeMode(false)));
+      //Rotates all wheels to 45 degrees relative to the frame
+      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive));
       // DButton.whenPressed(new InstantCommand(() -> singleModuleTestFixture.setAngle(new Rotation2d(0, -1))));
       
       //AutoRotate to desired heading
