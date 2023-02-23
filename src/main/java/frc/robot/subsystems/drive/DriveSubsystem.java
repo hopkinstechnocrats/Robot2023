@@ -259,10 +259,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Rotates all modules to point to center
   public void defence() {
-    m_frontLeft.setDesiredState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
-    m_frontRight.setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
-    m_rearLeft.setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
-    m_rearRight.setDesiredState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
+    m_frontLeft.setDefenseState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
+    m_frontRight.setDefenseState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
+    m_rearLeft.setDefenseState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
+    m_rearRight.setDefenseState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
   }
 
   //Changes brake mode of all modules

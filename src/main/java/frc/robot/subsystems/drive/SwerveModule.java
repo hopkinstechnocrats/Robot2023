@@ -85,6 +85,15 @@ public class SwerveModule {
     }
   }
 
+  /**
+   * Sets the desired state for the module, even if speed is 0.
+   *
+   * @param desiredState Desired state with speed and angle.
+   */
+  public void setDefenseState(SwerveModuleState desiredState) {
+    this.desiredState = desiredState;
+  }
+
   //Rotates module to 0 radians(defaut)
 
   public void setBrakeMode(Boolean brakeBoolean) {
