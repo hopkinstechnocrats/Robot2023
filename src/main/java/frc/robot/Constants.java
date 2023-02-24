@@ -146,7 +146,7 @@ public final class Constants {
 
   public static final class ManipulatorConstants {
     public static final int kMotorPort = 12;
-    public static final double kGearRatio = 1;
+    public static final double kGearRatio = 4;
 
     public static final double kP = 0;
     public static final double kI = 0;
