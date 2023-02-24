@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
@@ -26,6 +27,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.TestFixtureConstants;
+import frc.robot.Constants.ElevatorConstants.ElevatorPositionConstants;
 import frc.robot.Constants.ElevatorConstants.EquationConstants;
 import lib.Loggable;
 
@@ -48,6 +50,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
   private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
 
+  private final double[][] positionSetpoints;
+
   public ElevatorSubsystem(boolean manual){
     m_manual = manual;
     
@@ -57,11 +61,6 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
 
     m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
 
-    if(m_manual){
-      
-    }
-    else{
-     
       m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
       m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
   
@@ -78,8 +77,14 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
       m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
-  
-    }
+      
+      positionSetpoints = new double[][] {
+        thingsFromCartesianPoint(ElevatorPositionConstants.kPosition1X, ElevatorPositionConstants.kPosition1Y),
+        thingsFromCartesianPoint(ElevatorPositionConstants.kPositionHomeX, ElevatorPositionConstants.kPositionHomeY),
+        thingsFromCartesianPoint(ElevatorPositionConstants.kPositionMiddleX, ElevatorPositionConstants.kPositionMiddleY),
+        thingsFromCartesianPoint(ElevatorPositionConstants.kPositionHighX, ElevatorPositionConstants.kPositionHighY)
+      };
+    
     //Clear pre-sets? - AJ
     
   }
@@ -145,6 +150,7 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
     return reqEncoderTicksRotation;
 }
   
+
 public void MoveElevator(double extendSpeed, double winchSpeed){
   m_extendPrimaryMotor.set(extendSpeed);
   m_winchMotor.set(winchSpeed);
@@ -153,13 +159,15 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
 
   @Override
   public void periodic() {
-    //TODO change set reference values to come from a different value
-    m_extendPIDController.setReference(10, CANSparkMax.ControlType.kVelocity);
-    m_winchPIDController.setReference(10, CANSparkMax.ControlType.kVelocity);
+    m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
+    //still need to get correct values and get things from which button.
+    //the other PID's will work the same way
+
   }
 
+
   public void logInit() {
-    
+
 
   }
 }
