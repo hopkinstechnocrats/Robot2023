@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ManipulatorConstants;
 
@@ -23,7 +22,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     NetworkTableEntry setpointLog;
     NetworkTableEntry currentVelLog;
     
-    public void ManipulatorSubsystem () {
+    public ManipulatorSubsystem () {
         inst = NetworkTableInstance.getDefault();
         table = inst.getTable("Manipulator");
         setpointLog = table.getEntry("Setpoint (RPM)");
