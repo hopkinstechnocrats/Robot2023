@@ -43,7 +43,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
 
     public ModuleSteerIO(int motorPort, int encoderPort, double encoderOffset, String corners) {
         table = inst.getTable(corners);
-        steerMotor = new WPI_TalonFX(motorPort);
+        steerMotor = new WPI_TalonFX(motorPort, "GertrudeGreyser");
         steerMotor.configAllSettings(new BaseTalonFXConfiguration());
         steerMotor.setNeutralMode(NeutralMode.Brake);
         // set status frame period of steer motor
