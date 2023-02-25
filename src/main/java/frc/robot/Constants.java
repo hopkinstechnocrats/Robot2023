@@ -154,19 +154,19 @@ public final class Constants {
   public static final class ElevatorConstants {
 
     public static final class EquationConstants {
-      public static final double kIntakeOffsetFromArm = 181818181;
+      public static final double kIntakeOffsetFromArm = 1;
       //p1 in the drawing
       //TODO: units?
-      public static final double kArmLength = 777777777;
+      public static final double kArmLength = 7;
       //a in the drawing
       //TODO: units?
-      public static final double kPulleyHeight = 9000.001;
+      public static final double kPulleyHeight = 9;
       //h
       //TODO: ^^
-      public static final double kPulleySidewaysOffset = 69;
+      public static final double kPulleySidewaysOffset = 6;
       //p3
       //TODO: ^^
-      public static final double kArmOffsetFromRope = 420;
+      public static final double kArmOffsetFromRope = 4;
       //p4
       //TODO: ^^
       //there is no p2
@@ -206,6 +206,18 @@ public final class Constants {
       public static final double kMinOutput = -1;
     }
 
+    public static final class ElevatorPositionConstants {
+      // TODO find position values
+      public static final double kPosition1X = 2;
+      public static final double kPosition1Y = 2;
+      public static final double kPositionHomeX = 2;
+      public static final double kPositionHomeY = 2;
+      public static final double kPositionHighX = 2;
+      public static final double kPositionHighY = 2;
+      public static final double kPositionMiddleX = 2;
+      public static final double kPositionMiddleY = 2;
+
+    }
   }
 
 
