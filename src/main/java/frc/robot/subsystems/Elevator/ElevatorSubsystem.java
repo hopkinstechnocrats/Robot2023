@@ -146,7 +146,7 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
 }
   
 public void MoveElevator(double extendSpeed, double winchSpeed){
-  m_extendPrimaryMotor.set(extendSpeed);
+  //m_extendPrimaryMotor.set(extendSpeed);
   m_winchMotor.set(winchSpeed);
 }
 
