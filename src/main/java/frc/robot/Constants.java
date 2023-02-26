@@ -153,10 +153,10 @@ public final class Constants {
     public static final double kD = 0;
     public static final double kF = 0;
 
-    public static final double kCubeSpeedIn = 10;
-    public static final double kCubeSpeedOut = -10;
-    public static final double kConeSpeedIn = 5;
-    public static final double kConeSpeedOut = -5;
+    public static final double kCubeSpeedIn = .25;
+    public static final double kCubeSpeedOut = -.25;
+    public static final double kConeSpeedIn = -.25;
+    public static final double kConeSpeedOut = .25;
     public static final double kMaxSpeedRPM = 20;
   }
 }

@@ -30,14 +30,17 @@ public class ManipulatorSubsystem extends SubsystemBase {
         manipulatorMotor = new CANSparkMax(ManipulatorConstants.kMotorPort, MotorType.kBrushless);
         manipulatorEncoder = manipulatorMotor.getEncoder();
         manipulatorEncoder.setVelocityConversionFactor(ManipulatorConstants.kGearRatio);
+        manipulatorMotor.setSmartCurrentLimit(15, 30);
 
-        manipulatorPID = manipulatorMotor.getPIDController();
-        manipulatorPID.setFeedbackDevice(manipulatorEncoder);
-        manipulatorPID.setP(ManipulatorConstants.kP);
-        manipulatorPID.setI(ManipulatorConstants.kI);
-        manipulatorPID.setD(ManipulatorConstants.kD);
-        manipulatorPID.setFF(ManipulatorConstants.kF);
-        manipulatorPID.setOutputRange(-ManipulatorConstants.kMaxSpeedRPM, ManipulatorConstants.kMaxSpeedRPM);
+        manipulatorMotor.burnFlash(); // Save settings
+
+        // manipulatorPID = manipulatorMotor.getPIDController(); PID
+        // manipulatorPID.setFeedbackDevice(manipulatorEncoder);
+        // manipulatorPID.setP(ManipulatorConstants.kP);
+        // manipulatorPID.setI(ManipulatorConstants.kI);
+        // manipulatorPID.setD(ManipulatorConstants.kD);
+        // manipulatorPID.setFF(ManipulatorConstants.kF);
+        // manipulatorPID.setOutputRange(-ManipulatorConstants.kMaxSpeedRPM, ManipulatorConstants.kMaxSpeedRPM);
 
     }
 
@@ -59,13 +62,15 @@ public class ManipulatorSubsystem extends SubsystemBase {
     
 
     public void NoSpin() {
-        manipulatorPID.setReference(0, ControlType.kVelocity);
+        // manipulatorPID.setReference(0, ControlType.kVelocity); PID
+        manipulatorMotor.set(0);
     }
 
     public void Spin(double setpoint) {
-        manipulatorPID.setReference(setpoint, ControlType.kVelocity);
-        setpointLog.setDouble(setpoint);
-        currentVelLog.setDouble(manipulatorEncoder.getVelocity());
+        // manipulatorPID.setReference(setpoint, ControlType.kVelocity); PID
+        // setpointLog.setDouble(setpoint);
+        // currentVelLog.setDouble(manipulatorEncoder.getVelocity());
+        manipulatorMotor.set(setpoint);
         
     }
 }
