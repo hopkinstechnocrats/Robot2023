@@ -115,7 +115,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
         } else {  
             delta = (toBeModuled % (Math.PI)) - (Math.PI/2);
         }
-        // TODO: NEGATIVE NELLY'S AINT FUN DO THIS
+        
         desiredRot = currentPos + delta;
         // Make sure angle is between Pi and -Pi
         // deltaMod = (deltaMod - currentPos) > Math.PI ? deltaMod - (2 * Math.PI) : deltaMod;

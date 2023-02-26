@@ -95,10 +95,11 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final double kFrontRightOffset = 0.8934;
-    public static final double kFrontLeftOffset = 0.9793;
-    public static final double kRearRightOffset = 0.8768;
-    public static final double kRearLeftOffset = 0.3515;
+    public static final double kFrontRightOffset = 0.6397651127873688;
+    public static final double kFrontLeftOffset = 0.5980316954582193;
+    public static final double kRearRightOffset = 0.7292951235813542;
+    public static final double kRearLeftOffset = 0.12438739163621068
+    ;
   }
 
   public static final class ModuleConstants {
@@ -120,7 +121,7 @@ public final class Constants {
     public static final double kDriveGearRatio = 6.75;
 
     public static final double kSteerEncoderTicksPerRevolution = kfalconEncoderCPR * kSteeringGearRatio;
-    public static final double kDriveEncoderTicksPerRevolution = kfalconEncoderCPR + kDriveGearRatio;
+    public static final double kDriveEncoderTicksPerRevolution = kfalconEncoderCPR * kDriveGearRatio;
   }
 
   public static final class OIConstants {
