@@ -29,6 +29,8 @@ import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.TestFixtureConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorPositionConstants;
 import frc.robot.Constants.ElevatorConstants.EquationConstants;
+import frc.robot.Constants.ElevatorConstants.ExtenderConstatants;
+import frc.robot.Constants.ElevatorConstants.WinchConstants;
 import lib.Loggable;
 
 
@@ -70,6 +72,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstatants.kFF);
       m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstatants.kIz);
       m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
+      m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstatants.kMetersPerEncoderTick);
   
       m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
       m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
@@ -77,6 +80,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
       m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
+      m_winchMotorBuiltInEncoder.setPositionConversionFactor(WinchConstants.kRadiansPerEncoderTick);
       
       positionSetpoints = new double[][] {
         thingsFromCartesianPoint(ElevatorPositionConstants.kPosition1X, ElevatorPositionConstants.kPosition1Y),
@@ -152,14 +156,23 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){
-  //m_extendPrimaryMotor.set(extendSpeed);
+  m_extendPrimaryMotor.set(extendSpeed);
   m_winchMotor.set(winchSpeed);
 }
 
+public void moveToPoint(int desiredPos) {
+  double desExt = positionSetpoints[desiredPos][0];
+  double desRope = positionSetpoints[desiredPos][1];
+  double desAngle = positionSetpoints[desiredPos][2];
+
+  m_extendPIDController.setReference(desExt, ControlType.kPosition);
+  m_winchPIDController.setReference(desAngle, ControlType.kPosition);
+}
 
   @Override
   public void periodic() {
-    m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
+    // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
+  //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
     //the other PID's will work the same way
 

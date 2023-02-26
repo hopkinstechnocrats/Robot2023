@@ -191,6 +191,7 @@ public final class Constants {
       public static final double kIz = 0;
       public static final double kMaxOutput = 1;
       public static final double kMinOutput = -1;
+      public static final double kMetersPerEncoderTick = 10; // TODO: set
     }
 
 
@@ -204,6 +205,7 @@ public final class Constants {
       public static final double kIz = 0;
       public static final double kMaxOutput = 1;
       public static final double kMinOutput = -1;
+      public static final double kRadiansPerEncoderTick = 10;
     }
 
     public static final class ElevatorPositionConstants {
