@@ -32,7 +32,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
         manipulatorEncoder.setVelocityConversionFactor(ManipulatorConstants.kGearRatio);
         manipulatorMotor.setSmartCurrentLimit(15, 30);
 
-        manipulatorMotor.burnFlash(); // Save settings
+        manipulatorMotor.burnFlash(); // Save settings even after brownout
 
         // manipulatorPID = manipulatorMotor.getPIDController(); PID
         // manipulatorPID.setFeedbackDevice(manipulatorEncoder);
