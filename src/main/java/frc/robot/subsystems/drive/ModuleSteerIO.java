@@ -19,6 +19,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table;
+    NetworkTable ioTable;
 
     double delta;
     double deltaMod;
@@ -43,6 +44,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
 
     public ModuleSteerIO(int motorPort, int encoderPort, double encoderOffset, String corners) {
         table = inst.getTable(corners);
+        ioTable = table.getSubTable("Steer");
         steerMotor = new WPI_TalonFX(motorPort, "GertrudeGreyser");
         steerMotor.configAllSettings(new BaseTalonFXConfiguration());
         steerMotor.setNeutralMode(NeutralMode.Brake);
@@ -51,9 +53,6 @@ public class ModuleSteerIO implements ClosedLoopIO {
         m_canCoderSteeringPIDController.enableContinuousInput(-Math.PI, Math.PI);
         encoder = new AnalogEncoder(encoderPort);
         offset = new Rotation2d(encoderOffset);
-
-        inst.getTable("SmartDashboard").getEntry("KpTurning Controller").setDouble(0.0);
-        table.getEntry("PositionRad").setDouble(0.0);
 
         //Configure Max & Min outputs of Falcon
         steerMotor.configNominalOutputForward(0);
@@ -71,9 +70,10 @@ public class ModuleSteerIO implements ClosedLoopIO {
 
     public void updateInputs(ClosedLoopIOInputs inputs) {
         // steerMotor.config_kP(0, inst.getTable("SmartDashboard").getEntry("KpTurning Controller").getDouble(0));
-        // table.getEntry("Rot Pos Act").setDouble(getPosition().getRadians());
-        // inputs.positionRad = getPosition().getRadians();
-        //inputs.toLog(table);
+        inputs.positionSetpointRad = setpoint;
+        inputs.positionRad = getPosition().getRadians();
+        inputs.appliedVolts = steerMotor.getMotorOutputVoltage();
+        inputs.toLog(ioTable);
 
         m_canCoderSteeringPIDController.setP(Constants.ModuleConstants.kPModuleTurningController);
         m_canCoderSteeringPIDController.setI(Constants.ModuleConstants.kIModuleTurningController);
@@ -89,7 +89,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
     }
 
     Rotation2d getAbsPosition() {
-        return new Rotation2d().fromRadians(getPosition().getRadians() % (2 * Math.PI));
+        return Rotation2d.fromRadians(getPosition().getRadians() % (2 * Math.PI));
     }
 
     //Get position using CanCoder
@@ -97,7 +97,7 @@ public class ModuleSteerIO implements ClosedLoopIO {
         return Rotation2d.fromRadians(encoder.getAbsolutePosition()).minus(offset);
     }
 
-    //Calculates temporary offset as: tempOffset =  Falcon Encoder Value - (Cancoder value - Offset)
+    // Set sensor rot to cancoder position*Ticks per rev of encoder
     public void calculateOffset() {
         steerMotor.setSelectedSensorPosition(Constants.ModuleConstants.kSteerEncoderTicksPerRevolution*getCanCoderPosition().getRadians());
     }
@@ -117,9 +117,6 @@ public class ModuleSteerIO implements ClosedLoopIO {
         }
         
         desiredRot = currentPos + delta;
-        // Make sure angle is between Pi and -Pi
-        // deltaMod = (deltaMod - currentPos) > Math.PI ? deltaMod - (2 * Math.PI) : deltaMod;
-        // deltaMod = (deltaMod - currentPos) < -Math.PI ? deltaMod + (2 * Math.PI) : deltaMod;
 
         //Return final desired angle
         return desiredRot;
@@ -130,9 +127,6 @@ public class ModuleSteerIO implements ClosedLoopIO {
         setpoint = fixRot(positionRad);
         steerMotor.set(ControlMode.Position, 
         (setpoint)* (Constants.ModuleConstants.kSteerEncoderTicksPerRevolution)/(2*Math.PI));
-        table.getEntry("Rot Setpoint").setDouble(setpoint);
-        table.getEntry("PositionRad").setDouble(getAbsPosition().getRadians());
-        table.getEntry("MotorPower").setDouble(steerMotor.getMotorOutputVoltage());
     }
 
     //Sets position using CanCoderPID
