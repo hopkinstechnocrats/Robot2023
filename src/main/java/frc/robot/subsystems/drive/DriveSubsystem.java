@@ -126,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.periodic();
     m_rearRight.periodic();
     SmartDashboard.putNumber("Heading", getHeading().getDegrees());
-    m_field.setRobotPose(getPose());
+    m_field.setRobotPose(getPose()); // Be sure to use Degrees and not Radians in AdvantageScope
   }
 
   /**
