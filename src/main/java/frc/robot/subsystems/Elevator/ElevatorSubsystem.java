@@ -162,9 +162,6 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){
-  table.getEntry("Extend Encoder Rotations").setDouble(m_extendLeftMotorBuiltInEncoder.getPosition());
-  table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
-
   if (m_winchMotorBuiltInEncoder.getPosition() > WinchConstants.k45DegreesRots) {
     // Dowwn
     if (m_extendLeftMotorBuiltInEncoder.getPosition() < ExtenderConstatants.kMaxExtentionFlat) {
@@ -207,6 +204,10 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
 
   @Override
   public void periodic() {
+    
+  table.getEntry("Extend Encoder Rotations").setDouble(m_extendLeftMotorBuiltInEncoder.getPosition());
+  table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
+
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
