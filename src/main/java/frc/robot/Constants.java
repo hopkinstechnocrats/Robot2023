@@ -181,8 +181,10 @@ public final class Constants {
     }
 
     public static final class ExtenderConstatants{
-      public static final int kPrimaryMotorID = 1;
-      public static final int kSecondaryMotorID = 2;
+      public static final int kPrimaryMotorID = 17;
+      public static final int kSecondaryMotorID = 15;
+
+      public static final double kMaxExtentionFlat = 10;
     
       public static final double kP = 1;
       public static final double kI = 0;
@@ -196,7 +198,9 @@ public final class Constants {
 
 
     public static final class WinchConstants {
-      public static final int kMotorID = 3;
+      public static final int kMotorID = 18;
+
+      public static final double k45DegreesRots = 10;
 
       public static final double kP = 1;
       public static final double kI = 0;

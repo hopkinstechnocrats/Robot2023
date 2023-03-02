@@ -41,7 +41,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   //private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem(true);
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -79,7 +79,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(
         new RunCommand(
             () ->
-            m_elevator.MoveElevator(0.2*m_operatorController.getLeftY(), 0.2*m_operatorController.getRightY())
+            m_elevator.MoveElevator(0.15*m_operatorController.getLeftY(), 0.15*m_operatorController.getRightY())
             , m_elevator)
     );
     // singleModuleTestFixture.setDefaultCommand(
