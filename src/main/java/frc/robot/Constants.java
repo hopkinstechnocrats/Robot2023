@@ -30,20 +30,20 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 1;
-    public static final int kRearLeftDriveMotorPort = 4;
-    public static final int kFrontRightDriveMotorPort = 2;
-    public static final int kRearRightDriveMotorPort = 3;
+    public static final int kFrontLeftDriveMotorPort = 4;
+    public static final int kRearLeftDriveMotorPort = 3;
+    public static final int kFrontRightDriveMotorPort = 1;
+    public static final int kRearRightDriveMotorPort = 2;
 
-    public static final int kFrontLeftTurningMotorPort = 5;
-    public static final int kRearLeftTurningMotorPort = 8;
-    public static final int kFrontRightTurningMotorPort = 6;
-    public static final int kRearRightTurningMotorPort = 7;
+    public static final int kFrontLeftTurningMotorPort = 8;
+    public static final int kRearLeftTurningMotorPort = 7;
+    public static final int kFrontRightTurningMotorPort = 5;
+    public static final int kRearRightTurningMotorPort = 6;
 
     public static final int kFrontLeftTurningEncoderPort = 2;
     public static final int kRearLeftTurningEncoderPort = 3;
-    public static final int kFrontRightTurningEncoderPort = 0;
-    public static final int kRearRightTurningEncoderPort = 1;
+    public static final int kFrontRightTurningEncoderPort = 1;
+    public static final int kRearRightTurningEncoderPort = 0;
 
     public static final boolean kFrontLeftTurningEncoderReversed = true;
     public static final boolean kRearLeftTurningEncoderReversed = false;
@@ -97,10 +97,10 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final double kFrontRightOffset = 0.8934;
-    public static final double kFrontLeftOffset = 0.9793;
-    public static final double kRearRightOffset = 0.8768;
-    public static final double kRearLeftOffset = 0.3515;
+    public static final double kFrontRightOffset = 0.7284574431665793;
+    public static final double kFrontLeftOffset = 0.09268652376364071;
+    public static final double kRearRightOffset = 0.6394721317593424;
+    public static final double kRearLeftOffset = 0.620263356999417;
   }
 
   public static final class ModuleConstants {
@@ -122,7 +122,7 @@ public final class Constants {
     public static final double kDriveGearRatio = 6.75;
 
     public static final double kSteerEncoderTicksPerRevolution = kfalconEncoderCPR * kSteeringGearRatio;
-    public static final double kDriveEncoderTicksPerRevolution = kfalconEncoderCPR + kDriveGearRatio;
+    public static final double kDriveEncoderTicksPerRevolution = kfalconEncoderCPR * kDriveGearRatio;
   }
 
   public static final class OIConstants {
@@ -138,6 +138,9 @@ public final class Constants {
     public static final double kPXController = 2;
     public static final double kPYController = 2;
     public static final double kPThetaController = 2;
+
+    public static final double kBalanceDriveSpeed = 1;
+    public static final double kBalanceDeadzoneAngle = 5;
 
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

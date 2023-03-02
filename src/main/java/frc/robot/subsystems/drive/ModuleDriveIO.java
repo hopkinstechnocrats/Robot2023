@@ -14,6 +14,7 @@ import lib.talonconfiguration.BaseTalonFXConfiguration;
 public class ModuleDriveIO implements ClosedLoopIO {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table;
+    NetworkTable ioTable;
 
     private final WPI_TalonFX driveMotor;
     private boolean inverted;
@@ -31,8 +32,9 @@ public class ModuleDriveIO implements ClosedLoopIO {
 
     public ModuleDriveIO(int motorPort, boolean inverted, String corners) {
         table = inst.getTable(corners);
+        ioTable = table.getSubTable("Drive");
         this.inverted = inverted;
-        driveMotor = new WPI_TalonFX(motorPort);
+        driveMotor = new WPI_TalonFX(motorPort, "GertrudeGreyser");
         // set status frame period of drive motor
         driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
         driveMotor.configAllSettings(new BaseTalonFXConfiguration());
@@ -45,8 +47,9 @@ public class ModuleDriveIO implements ClosedLoopIO {
     }
 
     public void updateInputs(ClosedLoopIOInputs inputs) {
+        inputs.appliedVolts = driveMotor.getMotorOutputVoltage();
         inputs.velocityRadPerSec = getVelocityRadPerSecond();
-        //inputs.toLog(table);
+        inputs.toLog(ioTable);
     }
 
     double getPositionRad() {

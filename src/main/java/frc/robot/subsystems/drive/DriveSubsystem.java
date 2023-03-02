@@ -10,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -125,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.periodic();
     m_rearRight.periodic();
     SmartDashboard.putNumber("Heading", getHeading().getDegrees());
-    m_field.setRobotPose(getPose());
+    m_field.setRobotPose(getPose()); // Be sure to use Degrees and not Radians in AdvantageScope
   }
 
   /**
@@ -240,7 +241,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-1*m_gyro.getFusedHeading());
+    return Rotation2d.fromDegrees(-1 * m_gyro.getFusedHeading());
   }
 
   public void autoRotate(double xSpeed, double ySpeed, double desiredAngleRad, double rTrigger) {
@@ -286,12 +287,31 @@ public class DriveSubsystem extends SubsystemBase {
     return -1* m_gyro.getRoll();
   }
 
+  public float getPitch() {
+    return m_gyro.getPitch();
+  }
+
+  public float getYaw() {
+    return m_gyro.getYaw();
+  }
+
   //Flips front of robot
   public void makeBackwards(boolean GOGOGOGOGOGOGO) {
     if (GOGOGOGOGOGOGO){
       negate = -1;
     } else{
       negate = 1;
+    }
+  }
+
+  public void balance() {
+    if (m_gyro.getPitch() < -AutoConstants.kBalanceDeadzoneAngle) {
+      drive(AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
+    } else if (m_gyro.getPitch() > AutoConstants.kBalanceDeadzoneAngle) {
+      drive(-AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
+    } else {
+      //it's flat
+      defence();
     }
   }
 
