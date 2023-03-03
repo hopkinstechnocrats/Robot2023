@@ -74,9 +74,9 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
 
     // m_extendPrimaryMotor.setIdleMode(IdleMode.kBrake);
     // m_extendSecondaryMotor.setIdleMode(IdleMode.kBrake);
-    // m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
+    m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
 
-    // m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
+      // m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
       // m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
   
       // m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
@@ -205,7 +205,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   if (Math.abs(winchSpeed) < .1) {
     if (winchZeroSpeedBool) {
       if (winchPos < winchZeroSpeedDouble) {
-        winchSet = .2;
+        winchSet = .1;
       } else {
         winchSet = 0;
       }
@@ -221,7 +221,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   if (Math.abs(extendSpeed) < .1) {
     if (extendZeroSpeedBool) {
       if (extendPos > extendZeroSpeedDouble) {
-        extendSet = -.1;
+        extendSet = -.05 * ((-72-winchPos)/(-72));
       } else {
         extendSet = 0;
       }
