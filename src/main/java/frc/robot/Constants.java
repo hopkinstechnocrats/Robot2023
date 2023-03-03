@@ -40,7 +40,7 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 5;
     public static final int kRearRightTurningMotorPort = 6;
 
-    public static final int kFrontLeftTurningEncoderPort = 4;
+    public static final int kFrontLeftTurningEncoderPort = 2;
     public static final int kRearLeftTurningEncoderPort = 3;
     public static final int kFrontRightTurningEncoderPort = 1;
     public static final int kRearRightTurningEncoderPort = 0;
@@ -187,7 +187,7 @@ public final class Constants {
       public static final int kPrimaryMotorID = 17;
       public static final int kSecondaryMotorID = 15;
 
-      public static final double kMaxExtentionFlat = 10;
+      public static final double kMaxExtentionFlat = -13.5;
     
       public static final double kP = 1;
       public static final double kI = 0;
@@ -203,7 +203,7 @@ public final class Constants {
     public static final class WinchConstants {
       public static final int kMotorID = 18;
 
-      public static final double k45DegreesRots = 10;
+      public static final double k45DegreesRots = -40;
 
       public static final double kP = 1;
       public static final double kI = 0;
@@ -233,7 +233,7 @@ public final class Constants {
 
 
   public static final class ManipulatorConstants {
-    public static final int kMotorPort = 12;
+    public static final int kMotorPort = 19;
     public static final double kGearRatio = 4;
 
     public static final double kP = 0;
@@ -243,8 +243,8 @@ public final class Constants {
 
     public static final double kCubeSpeedIn = .25;
     public static final double kCubeSpeedOut = -.25;
-    public static final double kConeSpeedIn = -.25;
-    public static final double kConeSpeedOut = .25;
+    public static final double kConeSpeedIn = -.4;
+    public static final double kConeSpeedOut = .4;
     public static final double kMaxSpeedRPM = 20;
   }
 }

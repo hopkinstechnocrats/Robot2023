@@ -66,7 +66,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
-    m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(-1, 0));
+    m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(2, 0));
     SmartDashboard.putData(m_autoChooser);
       //Start logging
       DataLogManager.start();
@@ -157,15 +157,15 @@ public class RobotContainer {
       m_driverController.getRightTriggerAxis()), m_robotDrive));
 
       
-      JoystickButton OAButton = new JoystickButton(m_operatorController, 1);
-      JoystickButton OBButton = new JoystickButton(m_operatorController, 2);
+      JoystickButton OLBButton = new JoystickButton(m_operatorController, 5);
+      JoystickButton ORBButton = new JoystickButton(m_operatorController, 6);
       JoystickButton OXButton = new JoystickButton(m_operatorController, 3);
       JoystickButton OYButton = new JoystickButton(m_operatorController, 4);
 
       //Spin Cone out
-      OAButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
+      ORBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
       //Spin Cone in
-      OBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
+      OLBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
       //Spin Cube out
       OXButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator)); 
       //Spin Cube in

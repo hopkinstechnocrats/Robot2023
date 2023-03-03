@@ -41,6 +41,13 @@ import lib.Loggable;
 public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   NetworkTableInstance inst;
   NetworkTable table;
+  
+  boolean winchZeroSpeedBool = false;
+  double winchZeroSpeedDouble = 0;
+  boolean extendZeroSpeedBool = false;
+  double extendZeroSpeedDouble = 0;
+  double winchSet = 0;
+  double extendSet = 0;
   /** Creates a new SingleModuleTestFixture. */
 
   private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstatants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -162,36 +169,73 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){
-  if (m_winchMotorBuiltInEncoder.getPosition() > WinchConstants.k45DegreesRots) {
+  double winchPos = m_winchMotorBuiltInEncoder.getPosition();
+  double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
+
+  if (winchPos < WinchConstants.k45DegreesRots) {
     // Dowwn
-    if (m_extendLeftMotorBuiltInEncoder.getPosition() < ExtenderConstatants.kMaxExtentionFlat) {
-      m_extendPrimaryMotor.set(extendSpeed);
-      m_winchMotor.set(winchSpeed);
+    if (extendPos > ExtenderConstatants.kMaxExtentionFlat) {
+      extendSet = extendSpeed;
+      winchSet = winchSpeed;
       // Below Max Extend
     } else {
       // Above Max Extend
       if (winchSpeed <= 0){
         // Retracting winch
-        m_winchMotor.set(winchSpeed);
+        winchSet = winchSpeed;
       } else {
         // Extending winch
-        m_winchMotor.set(-.15);
+        winchSet = -.25;
       }
       if (extendSpeed >= 0) {
       // Extending
       // Don't move
-      m_extendPrimaryMotor.set(0);
+      extendSet = 0;
     } else {
       // Retracting
-      m_extendPrimaryMotor.set(extendSpeed);
+      extendSet = extendSpeed;
     }
   }
  } else {
     // Above reaching angle, so okay to extend as much as we want
-    m_winchMotor.set(winchSpeed);
-    m_extendPrimaryMotor.set(extendSpeed);
+    winchSet = winchSpeed;
+    extendSet = extendSpeed;
   }
+
+  if (Math.abs(winchSpeed) < .1) {
+    if (winchZeroSpeedBool) {
+      if (winchPos < winchZeroSpeedDouble) {
+        winchSet = .25;
+      }
+    
+  } else {
+    winchZeroSpeedBool = true;
+    winchZeroSpeedDouble = winchPos;
+  }
+} else {
+  winchZeroSpeedBool = false;
 }
+
+  if (Math.abs(extendSpeed) < .1) {
+    if (extendZeroSpeedBool) {
+      if (extendPos < extendZeroSpeedDouble) {
+        extendSet = -.15;
+      }
+    
+  } else {
+    extendZeroSpeedBool = true;
+    extendZeroSpeedDouble = extendPos;
+  }
+}  else {
+  extendZeroSpeedBool = false;
+}
+
+  m_extendPrimaryMotor.set(extendSet);
+  m_winchMotor.set(winchSet);
+}
+
+  
+
 
 // public void moveToPoint(int desiredPos) {
 //   double desExt = positionSetpoints[desiredPos][0];
