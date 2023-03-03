@@ -170,14 +170,14 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
       // Below Max Extend
     } else {
       // Above Max Extend
-      if (winchSpeed < 0){
+      if (winchSpeed <= 0){
         // Retracting winch
         m_winchMotor.set(winchSpeed);
       } else {
         // Extending winch
-        m_winchMotor.set(0);
+        m_winchMotor.set(-.15);
       }
-      if (extendSpeed > 0) {
+      if (extendSpeed >= 0) {
       // Extending
       // Don't move
       m_extendPrimaryMotor.set(0);
