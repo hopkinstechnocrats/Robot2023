@@ -66,7 +66,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
-    m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(2, 0));
+    m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3, 0));
     SmartDashboard.putData(m_autoChooser);
       //Start logging
       DataLogManager.start();
@@ -94,7 +94,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(
         new RunCommand(
             () ->
-            m_elevator.MoveElevator(0.15*m_operatorController.getLeftY(), 0.15*m_operatorController.getRightY())
+            m_elevator.MoveElevator(0.15*m_operatorController.getLeftY(), 0.25*m_operatorController.getRightY())
             , m_elevator)
     );
     // singleModuleTestFixture.setDefaultCommand(
