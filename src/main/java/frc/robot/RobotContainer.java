@@ -67,6 +67,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
     m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3, 0));
+    m_autoChooser.addOption("null", null);
     SmartDashboard.putData(m_autoChooser);
       //Start logging
       DataLogManager.start();

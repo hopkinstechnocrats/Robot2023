@@ -194,8 +194,8 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = 1;
-      public static final double kMinOutput = -1;
+      public static final double kMaxOutput = .7;
+      public static final double kMinOutput = -.7;
       public static final double kMetersPerEncoderTick = 10; // TODO: set
     }
 
@@ -243,8 +243,8 @@ public final class Constants {
 
     public static final double kCubeSpeedIn = .25;
     public static final double kCubeSpeedOut = -.25;
-    public static final double kConeSpeedIn = -.4;
-    public static final double kConeSpeedOut = .4;
+    public static final double kConeSpeedIn = -.6;
+    public static final double kConeSpeedOut = .6;
     public static final double kMaxSpeedRPM = 20;
   }
 }
