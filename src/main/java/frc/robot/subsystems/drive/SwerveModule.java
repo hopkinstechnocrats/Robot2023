@@ -37,7 +37,7 @@ public class SwerveModule {
     table = inst.getTable(corners);
 
     steerIO = new ModuleSteerIO(turningMotorPort, turningEncoderPort, turningEncoderOffset, corners);
-    driveIO = new ModuleDriveIO(driveMotorPort, false,corners);
+    driveIO = new ModuleDriveIO(driveMotorPort, false, corners);
     steerInputs = new ClosedLoopIO.ClosedLoopIOInputs(1);
     driveInputs = new ClosedLoopIO.ClosedLoopIOInputs(1);
     desiredState = new SwerveModuleState(0, new Rotation2d(0));
@@ -83,6 +83,15 @@ public class SwerveModule {
     } else {
       this.desiredState = desiredState;
     }
+  }
+
+  /**
+   * Sets the desired state for the module, even if speed is 0.
+   *
+   * @param desiredState Desired state with speed and angle.
+   */
+  public void setDefenseState(SwerveModuleState desiredState) {
+    this.desiredState = desiredState;
   }
 
   //Rotates module to 0 radians(defaut)

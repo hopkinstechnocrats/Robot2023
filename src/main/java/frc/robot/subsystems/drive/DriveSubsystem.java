@@ -126,9 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.periodic();
     m_rearRight.periodic();
     SmartDashboard.putNumber("Heading", getHeading().getDegrees());
-    SmartDashboard.putNumber("Roll", getRoll());
-    SmartDashboard.putNumber("Pitch", getPitch());
-    m_field.setRobotPose(getPose());
+    m_field.setRobotPose(getPose()); // Be sure to use Degrees and not Radians in AdvantageScope
   }
 
   /**
@@ -169,6 +167,15 @@ public class DriveSubsystem extends SubsystemBase {
     rot =  -1* MathUtil.applyDeadband(rot, 0.4);
     ySpeed = negate*MathUtil.applyDeadband(ySpeed, 0.2);
     xSpeed =  negate*MathUtil.applyDeadband(xSpeed, 0.2);
+
+    if (Math.abs(xSpeed) > 0.2) {
+      xSpeed = xSpeed + (xSpeed/Math.abs(xSpeed)) * rTrigger * DriveConstants.kBoostModifier;
+    } 
+
+    if (Math.abs(ySpeed) > 0.2) {
+      ySpeed = ySpeed + (ySpeed/Math.abs(ySpeed)) * rTrigger * DriveConstants.kBoostModifier;
+    }
+    
     rot = rotFilter.calculate(rot);
     ySpeed = ySpeedFilter.calculate(ySpeed);
     xSpeed = xSpeedFilter.calculate(xSpeed);
@@ -234,7 +241,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-1*m_gyro.getFusedHeading());
+    return Rotation2d.fromDegrees(-1 * m_gyro.getFusedHeading());
   }
 
   public void autoRotate(double xSpeed, double ySpeed, double desiredAngleRad, double rTrigger) {
@@ -262,10 +269,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Rotates all modules to point to center
   public void defence() {
-    m_frontLeft.setDesiredState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
-    m_frontRight.setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
-    m_rearLeft.setDesiredState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
-    m_rearRight.setDesiredState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
+    m_frontLeft.setDefenseState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
+    m_frontRight.setDefenseState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
+    m_rearLeft.setDefenseState(new SwerveModuleState(0, new Rotation2d(Math.PI/4)));
+    m_rearRight.setDefenseState(new SwerveModuleState(0, new Rotation2d(-Math.PI/4)));
   }
 
   //Changes brake mode of all modules
@@ -298,9 +305,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void balance() {
-    if (m_gyro.getPitch() < -AutoConstants.kDeadzoneAngle) {
+    if (m_gyro.getPitch() < -AutoConstants.kBalanceDeadzoneAngle) {
       drive(AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
-    } else if (m_gyro.getPitch() > AutoConstants.kDeadzoneAngle) {
+    } else if (m_gyro.getPitch() > AutoConstants.kBalanceDeadzoneAngle) {
       drive(-AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
     } else {
       //it's flat

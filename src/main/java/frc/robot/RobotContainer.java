@@ -8,6 +8,8 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import frc.robot.Constants.AutoConstants;
@@ -22,6 +24,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -29,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.DataLogManager;
+import frc.robot.Auto.AutoRoutines;
 
 import java.util.List;
 
@@ -45,6 +50,7 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ManipulatorSubsystem m_manipulator = new ManipulatorSubsystem();
+  private final AutoRoutines m_autoRoutines = new AutoRoutines(m_robotDrive);
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -52,10 +58,16 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable autoTable = inst.getTable("Auto");
+  private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+    m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
+    m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(-1, 0));
+    SmartDashboard.putData(m_autoChooser);
       //Start logging
       DataLogManager.start();
       DataLog log = DataLogManager.getLog();
@@ -74,8 +86,8 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    3*m_driverController.getLeftY(),
-                    3*m_driverController.getLeftX(),
+                    -3*m_driverController.getLeftY(),
+                    -3*m_driverController.getLeftX(),
                     3*m_driverController.getRightX(),
                m_driverController.getRightTriggerAxis()), m_robotDrive));
 
@@ -117,12 +129,8 @@ public class RobotContainer {
       AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
       BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
 
-      //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
-      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
-          new InstantCommand(() -> m_robotDrive.setBrakeMode(true)))
-          );
-      XButton.onFalse(new InstantCommand(() -> m_robotDrive.setBrakeMode(false)));
-      
+      //Rotates all wheels to 45 degrees relative to the frame
+      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive));
       // DButton.whenPressed(new InstantCommand(() -> singleModuleTestFixture.setAngle(new Rotation2d(0, -1))));
       
       //AutoRotate to desired heading
@@ -172,6 +180,9 @@ public class RobotContainer {
    */
   
   public Command getAutonomousCommand() {
+
+    return m_autoChooser.getSelected();
+   /* EXAMPLE AUTO CODE
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -217,5 +228,6 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, 0));
+    */ 
   }
 }
