@@ -202,33 +202,33 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
     extendSet = extendSpeed;
   }
 
-  if (Math.abs(winchSpeed) < .1) {
-    if (winchZeroSpeedBool) {
-      if (winchPos < winchZeroSpeedDouble) {
-        winchSet = .25;
-      }
+//   if (Math.abs(winchSpeed) < .1) {
+//     if (winchZeroSpeedBool) {
+//       if (winchPos < winchZeroSpeedDouble) {
+//         winchSet = .25;
+//       }
     
-  } else {
-    winchZeroSpeedBool = true;
-    winchZeroSpeedDouble = winchPos;
-  }
-} else {
-  winchZeroSpeedBool = false;
-}
+//   } else {
+//     winchZeroSpeedBool = true;
+//     winchZeroSpeedDouble = winchPos;
+//   }
+// } else {
+//   winchZeroSpeedBool = false;
+// }
 
-  if (Math.abs(extendSpeed) < .1) {
-    if (extendZeroSpeedBool) {
-      if (extendPos < extendZeroSpeedDouble) {
-        extendSet = -.15;
-      }
+//   if (Math.abs(extendSpeed) < .1) {
+//     if (extendZeroSpeedBool) {
+//       if (extendPos < extendZeroSpeedDouble) {
+//         extendSet = -.15;
+//       }
     
-  } else {
-    extendZeroSpeedBool = true;
-    extendZeroSpeedDouble = extendPos;
-  }
-}  else {
-  extendZeroSpeedBool = false;
-}
+//   } else {
+//     extendZeroSpeedBool = true;
+//     extendZeroSpeedDouble = extendPos;
+//   }
+// }  else {
+//   extendZeroSpeedBool = false;
+// }
 
   m_extendPrimaryMotor.set(extendSet);
   m_winchMotor.set(winchSet);
