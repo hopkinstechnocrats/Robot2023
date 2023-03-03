@@ -299,9 +299,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void balance() {
     if (m_gyro.getPitch() < -AutoConstants.kDeadzoneAngle) {
-      drive(DriveConstants.kBalanceDriveSpeed, 0, 0, 0);
+      drive(AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
     } else if (m_gyro.getPitch() > AutoConstants.kDeadzoneAngle) {
-      drive(-DriveConstants.kBalanceDriveSpeed, 0, 0, 0);
+      drive(-AutoConstants.kBalanceDriveSpeed, 0, 0, 0);
     } else {
       //it's flat
       defence();

@@ -147,6 +147,7 @@ public final class Constants {
     //meters
 
     public static final double kDeadzoneAngle = 5;
+    public static final double kBalanceDriveSpeed = .25;
   }
 
   public static final class ElevatorConstants {
