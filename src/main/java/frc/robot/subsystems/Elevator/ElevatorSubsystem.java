@@ -185,9 +185,9 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
         winchSet = winchSpeed;
       } else {
         // Extending winch
-        winchSet = -.25;
+        winchSet = .25;
       }
-      if (extendSpeed >= 0) {
+      if (extendSpeed <= 0) {
       // Extending
       // Don't move
       extendSet = 0;
