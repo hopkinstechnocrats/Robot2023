@@ -65,8 +65,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
     // m_extendSecondaryMotor.restoreFactoryDefaults();
     // m_winchMotor.restoreFactoryDefaults();
 
-    m_extendPrimaryMotor.setIdleMode(IdleMode.kBrake);
-    m_extendSecondaryMotor.setIdleMode(IdleMode.kBrake);
+    // m_extendPrimaryMotor.setIdleMode(IdleMode.kBrake);
+    // m_extendSecondaryMotor.setIdleMode(IdleMode.kBrake);
     m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
 
       // m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
