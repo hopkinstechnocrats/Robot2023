@@ -95,19 +95,17 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final double kFrontRightOffset = -0.07516505860639658; // -2.998932440316429;
-    public static final double kFrontLeftOffset =1.6520973085528357 + 0.4678641403051204; // 0.796136928912 - Math.PI;
-    public static final double kRearRightOffset = 0.796136928912 + 0.034; // -1.0507768370;
-    public static final double kRearLeftOffset = 0.15339807878856412; //(-0.069029 + Math.PI) % Math.PI;
-
-    public static final double kBalanceDriveSpeed = 1;
+    public static final double kFrontRightOffset = 0.8934;
+    public static final double kFrontLeftOffset = 0.9793;
+    public static final double kRearRightOffset = 0.8768;
+    public static final double kRearLeftOffset = 0.3515;
   }
 
   public static final class ModuleConstants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 0.5 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 0.5 * Math.PI;
-    public static double kUModuleTurningController = 3;
-    public static double kPModuleTurningController = .5*kUModuleTurningController;
+    public static double kUModuleTurningController = 1.8;
+    public static double kPModuleTurningController = .15*kUModuleTurningController;
     public static double tUModuleTurningController = .5; // Seconds
     public static double kIModuleTurningController = 0*(.54*kUModuleTurningController)/tUModuleTurningController;
     public static double kDModuleTurningController = 0*0.666666666*kUModuleTurningController*tUModuleTurningController;
@@ -228,4 +226,20 @@ public final class Constants {
 
 
 
+
+  public static final class ManipulatorConstants {
+    public static final int kMotorPort = 12;
+    public static final double kGearRatio = 4;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final double kCubeSpeedIn = .25;
+    public static final double kCubeSpeedOut = -.25;
+    public static final double kConeSpeedIn = -.25;
+    public static final double kConeSpeedOut = .25;
+    public static final double kMaxSpeedRPM = 20;
+  }
 }

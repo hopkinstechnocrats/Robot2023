@@ -14,6 +14,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+import frc.robot.subsystems.Manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,6 +43,8 @@ public class RobotContainer {
   // The robot's subsystems
   //private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ManipulatorSubsystem m_manipulator = new ManipulatorSubsystem();
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -64,7 +67,7 @@ public class RobotContainer {
 
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-    /*
+    
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -74,8 +77,8 @@ public class RobotContainer {
                     3*m_driverController.getLeftY(),
                     3*m_driverController.getLeftX(),
                     3*m_driverController.getRightX(),
-               m_driverController.getRightTriggerAxis()), m_robotDrive)); // use this to change from field oriented to non-field oriented
-*/
+               m_driverController.getRightTriggerAxis()), m_robotDrive));
+
     m_elevator.setDefaultCommand(
         new RunCommand(
             () ->
@@ -89,6 +92,8 @@ public class RobotContainer {
     //                     m_driverController.getLeftY(), m_driverController.getRightY()),
     //             singleModuleTestFixture)
     // );
+
+    m_manipulator.setDefaultCommand(new RunCommand(() -> m_manipulator.NoSpin(), m_manipulator));
   }
 
   /**
@@ -101,7 +106,7 @@ public class RobotContainer {
       JoystickButton AButton = new JoystickButton(m_driverController, 1);
       JoystickButton BButton = new JoystickButton(m_driverController, 2);
       JoystickButton XButton = new JoystickButton(m_driverController, 3);
-      // JoystickButton DButton = new JoystickButton(m_driverController, 4);
+      JoystickButton YButton = new JoystickButton(m_driverController, 4);
       
       // 
       POVButton DPadTop = new POVButton(m_driverController, 90);
@@ -109,19 +114,19 @@ public class RobotContainer {
       POVButton DPadBottom = new POVButton(m_driverController, 270);
       POVButton DPadLeft = new POVButton(m_driverController, 0);
 
-      //AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
-      //BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
+      AButton.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
+      BButton.onTrue(new InstantCommand(() -> m_robotDrive.resetOdometry(zeroPose)));
 
       //Turns on Brake mode, rotates all wheels to 45 degrees relative to the frame, and then disables brake mode when you let go
-      /*XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
+      XButton.whileTrue(new RunCommand(() -> m_robotDrive.defence(), m_robotDrive).beforeStarting(
           new InstantCommand(() -> m_robotDrive.setBrakeMode(true)))
           );
       XButton.onFalse(new InstantCommand(() -> m_robotDrive.setBrakeMode(false)));
-      */
+      
       // DButton.whenPressed(new InstantCommand(() -> singleModuleTestFixture.setAngle(new Rotation2d(0, -1))));
       
       //AutoRotate to desired heading
-      /*
+      
       DPadTop.whileTrue(new RunCommand(() -> m_robotDrive.autoRotate(-1*m_driverController.getLeftY(),
       -1*m_driverController.getLeftX(),
       0,
@@ -142,7 +147,22 @@ public class RobotContainer {
       -1*m_driverController.getLeftX(),
       -Math.PI/2,
       m_driverController.getRightTriggerAxis()), m_robotDrive));
-*/
+
+      
+      JoystickButton OAButton = new JoystickButton(m_operatorController, 1);
+      JoystickButton OBButton = new JoystickButton(m_operatorController, 2);
+      JoystickButton OXButton = new JoystickButton(m_operatorController, 3);
+      JoystickButton OYButton = new JoystickButton(m_operatorController, 4);
+
+      //Spin Cone out
+      OAButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
+      //Spin Cone in
+      OBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
+      //Spin Cube out
+      OXButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator)); 
+      //Spin Cube in
+      OYButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator)); 
+
   }
 
   /**
@@ -151,7 +171,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   
-  public Command getAutonomousCommand() {/*
+  public Command getAutonomousCommand() {
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -196,8 +216,6 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, 0));*/
-    return null;
- 
-    }
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, 0));
+  }
 }
