@@ -205,7 +205,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   if (Math.abs(winchSpeed) < .1) {
     if (winchZeroSpeedBool) {
       if (winchPos < winchZeroSpeedDouble) {
-        winchSet = .1;
+        winchSet = .1* ((-72-winchPos)/(-72));
       } else {
         winchSet = 0;
       }
