@@ -107,9 +107,8 @@ public class AutoRoutines {
     }
 
     public Command autoBalance() {
-
         return new SequentialCommandGroup(
-            driveStraightAuto(2, 0),
+            driveStraightAuto(3.75, 0),
             new RunCommand(m_driveTrain::balance, m_driveTrain)
         );
     }

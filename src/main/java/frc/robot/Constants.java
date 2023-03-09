@@ -109,8 +109,8 @@ public final class Constants {
     public static double kUModuleTurningController = 1.8;
     public static double kPModuleTurningController = .15*kUModuleTurningController;
     public static double tUModuleTurningController = .5; // Seconds
-    public static double kIModuleTurningController =0 * (.4*kUModuleTurningController)/tUModuleTurningController;
-    public static double kDModuleTurningController = 0 * 0.0666666666*kUModuleTurningController*tUModuleTurningController;
+    public static double kIModuleTurningController = 0*(.54*kUModuleTurningController)/tUModuleTurningController;
+    public static double kDModuleTurningController = 0*0.666666666*kUModuleTurningController*tUModuleTurningController;
 
     public static final double kPModuleDriveController = 0; // 0.15;
     public static final double kDModuleDriveController = 0;
@@ -127,6 +127,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static final class AutoConstants {
@@ -146,5 +147,104 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+    public static final double kAutoDriveDistance = 1.5;
+    //meters
+
+    public static final double kDeadzoneAngle = 5;
+  }
+
+  public static final class ElevatorConstants {
+
+    public static final class EquationConstants {
+      public static final double kIntakeOffsetFromArm = 1;
+      //p1 in the drawing
+      //TODO: units?
+      public static final double kArmLength = 7;
+      //a in the drawing
+      //TODO: units?
+      public static final double kPulleyHeight = 9;
+      //h
+      //TODO: ^^
+      public static final double kPulleySidewaysOffset = 6;
+      //p3
+      //TODO: ^^
+      public static final double kArmOffsetFromRope = 4;
+      //p4
+      //TODO: ^^
+      //there is no p2
+      
+      public static final double kWinchDiameter = 0;
+      //TODO: ^^
+      public static final double kGearRatioRotation = 4;
+      //The ratio from the Input to Output - how many Motor turns will result in one Output turn
+      //TODO: ^^
+      public static final int kEncoderTicksPerRevRotation = 0;
+      //TODO
+    }
+
+    public static final class ExtenderConstatants{
+      public static final int kPrimaryMotorID = 17;
+      public static final int kSecondaryMotorID = 15;
+
+      public static final double kMaxExtentionFlat = -13.5;
+    
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = .7;
+      public static final double kMinOutput = -.7;
+      public static final double kMetersPerEncoderTick = 10; // TODO: set
+    }
+
+
+    public static final class WinchConstants {
+      public static final int kMotorID = 18;
+
+      public static final double k45DegreesRots = -40;
+
+      public static final double kP = 1;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kFF = 0;
+      public static final double kIz = 0;
+      public static final double kMaxOutput = 1;
+      public static final double kMinOutput = -1;
+      public static final double kRadiansPerEncoderTick = 10;
+    }
+
+    public static final class ElevatorPositionConstants {
+      // TODO find position values
+      public static final double kPosition1X = 2;
+      public static final double kPosition1Y = 2;
+      public static final double kPositionHomeX = 2;
+      public static final double kPositionHomeY = 2;
+      public static final double kPositionHighX = 2;
+      public static final double kPositionHighY = 2;
+      public static final double kPositionMiddleX = 2;
+      public static final double kPositionMiddleY = 2;
+
+    }
+  }
+
+
+
+
+  public static final class ManipulatorConstants {
+    public static final int kMotorPort = 19;
+    public static final double kGearRatio = 4;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final double kCubeSpeedIn = 1;
+    public static final double kCubeSpeedOut = -1;
+    public static final double kConeSpeedIn = -.6;
+    public static final double kConeSpeedOut = .6;
+    public static final double kMaxSpeedRPM = 20;
   }
 }
