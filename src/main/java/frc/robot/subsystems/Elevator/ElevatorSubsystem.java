@@ -46,8 +46,6 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   double winchZeroSpeedDouble = 0;
   boolean extendZeroSpeedBool = false;
   double extendZeroSpeedDouble = 0;
-  double winchSet = 0;
-  double extendSet = 0;
   /** Creates a new SingleModuleTestFixture. */
 
   private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstatants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -169,6 +167,8 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){
+  double winchSet = 0;
+  double extendSet = 0;
   double winchPos = m_winchMotorBuiltInEncoder.getPosition();
   double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
 
@@ -205,7 +205,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   if (Math.abs(winchSpeed) < .1) {
     if (winchZeroSpeedBool) {
       if (winchPos < winchZeroSpeedDouble) {
-        winchSet = .1* ((-72-winchPos)/(-72));
+        winchSet = .1* ((-72-winchPos)/(-72)); // Modulate force w/ angle
       } else {
         winchSet = 0;
       }
@@ -221,7 +221,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   if (Math.abs(extendSpeed) < .1) {
     if (extendZeroSpeedBool) {
       if (extendPos > extendZeroSpeedDouble) {
-        extendSet = -.05 * ((-72-winchPos)/(-72));
+        extendSet = -.05 * ((-72-winchPos)/(-72)); // modulate force w/ angle
       } else {
         extendSet = 0;
       }
@@ -261,6 +261,28 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
     //still need to get correct values and get things from which button.
     //the other PID's will work the same way
 
+  }
+
+  public void moveElevatorAuto(double desWinch, double desExt) {
+    double winchSet = 0;
+    double extendSet = 0;
+    double winchPos = m_winchMotorBuiltInEncoder.getPosition();
+    double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
+
+      if (winchPos < desWinch) {
+        winchSet = .1* ((-72-winchPos)/(-72)); // Modulate force w/ angle
+      } else {
+        winchSet = 0;
+      }
+
+      if (extendPos > desExt) {
+        extendSet = -.05 * ((-72-winchPos)/(-72)); // modulate force w/ angle
+      } else {
+        extendSet = 0;
+      }
+
+    m_extendPrimaryMotor.set(extendSet);
+    m_winchMotor.set(winchSet);
   }
 
 

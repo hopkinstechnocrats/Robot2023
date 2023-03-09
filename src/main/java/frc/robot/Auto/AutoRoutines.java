@@ -10,23 +10,39 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ManipulatorConstants;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+import frc.robot.subsystems.Manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 
 public class AutoRoutines {
 
     private final DriveSubsystem m_driveTrain;
+    private final ElevatorSubsystem m_elevator;
+    private final ManipulatorSubsystem m_manipulator;
+    private NetworkTableInstance inst;
+    private NetworkTable table;
 
 
 
-    public AutoRoutines(DriveSubsystem m_driveTrain) {
+    public AutoRoutines(DriveSubsystem m_driveTrain, ElevatorSubsystem m_elevator, ManipulatorSubsystem m_manipulator) {
+        inst = NetworkTableInstance.getDefault();
+        table = inst.getTable("Auto Table");
+        table.getEntry("Des Winch Pos").setDouble(0);
+        table.getEntry("Des Extend Pos").setDouble(0);
         this.m_driveTrain = m_driveTrain;
+        this.m_elevator = m_elevator;
+        this.m_manipulator = m_manipulator;
     }
 
     public Command DriveBetweenPoints(
@@ -113,5 +129,15 @@ public class AutoRoutines {
         );
     }
 
+    public Command placeAuto() {
+        double desWinchPos = table.getEntry("Des Winch Pos").getDouble(0);
+        double desExtPos = table.getEntry("Des Extend Pos").getDouble(0);
+        
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(desWinchPos, desExtPos), m_elevator), 
+            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)).withTimeout(7),
+            new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(5), 
+            driveStraightAuto(4, 0));
+    }
 
 }

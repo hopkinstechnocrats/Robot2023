@@ -50,7 +50,7 @@ public class RobotContainer {
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ManipulatorSubsystem m_manipulator = new ManipulatorSubsystem();
-  private final AutoRoutines m_autoRoutines = new AutoRoutines(m_robotDrive);
+  private final AutoRoutines m_autoRoutines = new AutoRoutines(m_robotDrive, m_elevator, m_manipulator);
   public Pose2d zeroPose = new Pose2d();
   // private final SingleModuleTestFixture singleModuleTestFixture = new SingleModuleTestFixture();
 
@@ -67,6 +67,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
     m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3, 0));
+    m_autoChooser.addOption("ScoreAuto", m_autoRoutines.placeAuto());
     m_autoChooser.addOption("null", null);
     SmartDashboard.putData(m_autoChooser);
       //Start logging
