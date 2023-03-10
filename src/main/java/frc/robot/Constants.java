@@ -131,6 +131,18 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
+    public static final double kHighScoreExt = 0;
+    public static final double kHighScoreWinch = 0;
+
+    public static final double kGroundPickExt = 0;
+    public static final double kGroundPickWinch = 0;
+
+    public static final double kPlacedCubeX = 0;
+    public static final double kPlacedCubeY = 0;
+
+    public static final double kCubeScorePosX = 0;
+    public static final double kCubeScorePosY = 0;
+
     public static final double kMaxSpeedMetersPerSecond = 1.125;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
