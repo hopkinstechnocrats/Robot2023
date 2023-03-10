@@ -133,9 +133,8 @@ public class AutoRoutines {
         double desWinchPos = table.getEntry("Des Winch Pos").getDouble(0);
         double desExtPos = table.getEntry("Des Extend Pos").getDouble(0);
         
-        return new SequentialCommandGroup(
-            new ParallelCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(desWinchPos, desExtPos), m_elevator), 
-            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)).withTimeout(7),
+        return new SequentialCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(desWinchPos, desExtPos), m_elevator).withTimeout(7), 
+            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator).withTimeout(1),
             new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(5), 
             driveStraightAuto(4, 0));
     }

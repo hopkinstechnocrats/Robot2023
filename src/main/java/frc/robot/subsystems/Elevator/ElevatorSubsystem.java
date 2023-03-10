@@ -15,6 +15,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
@@ -65,6 +66,14 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   public ElevatorSubsystem(){
     inst = NetworkTableInstance.getDefault();
     table = inst.getTable("Elevator");
+
+    table.getEntry("extend P").setDouble(0);
+    table.getEntry("extend I").setDouble(0);
+    table.getEntry("extend D").setDouble(0);
+    
+    table.getEntry("winch P").setDouble(0);
+    table.getEntry("winch I").setDouble(0);
+    table.getEntry("winch D").setDouble(0);
     
     // m_extendPrimaryMotor.restoreFactoryDefaults();
     // m_extendSecondaryMotor.restoreFactoryDefaults();
@@ -74,23 +83,34 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
     // m_extendSecondaryMotor.setIdleMode(IdleMode.kBrake);
     m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
 
-      // m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
-      // m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
+      m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
+      m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
+
+      m_extendPrimaryMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+      m_extendPrimaryMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+      m_winchMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+      m_winchMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+      m_extendPrimaryMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
+      m_extendPrimaryMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-16.7);
+
+      m_winchMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
+      m_winchMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-71.4);
   
-      // m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
-      // m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstatants.kI);
-      // m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstatants.kD);
+      m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
+      m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstatants.kI);
+      m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstatants.kD);
       // m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstatants.kFF);
       // m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstatants.kIz);
-      // m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
+      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
       // m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstatants.kMetersPerEncoderTick);
   
-      // m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
-      // m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
-      // m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);
+      m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
+      m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
+      m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);
       // m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       // m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
-      // m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
+      m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
       // m_winchMotorBuiltInEncoder.setPositionConversionFactor(WinchConstants.kRadiansPerEncoderTick);
       
       // positionSetpoints = new double[][] {
@@ -264,26 +284,17 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
-    double winchSet = 0;
-    double extendSet = 0;
-    double winchPos = m_winchMotorBuiltInEncoder.getPosition();
-    double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
+    m_extendPIDController.setP(table.getEntry("extend P").getDouble(0));
+    m_extendPIDController.setI(table.getEntry("extend I").getDouble(0));
+    m_extendPIDController.setD(table.getEntry("extend D").getDouble(0));
+    
+    m_winchPIDController.setP(table.getEntry("winch P").getDouble(0));
+    m_winchPIDController.setI(table.getEntry("winch I").getDouble(0));
+    m_winchPIDController.setD(table.getEntry("winch D").getDouble(0));
 
-      if (winchPos < desWinch) {
-        winchSet = .1* ((-72-winchPos)/(-72)); // Modulate force w/ angle
-      } else {
-        winchSet = 0;
-      }
-
-      if (extendPos > desExt) {
-        extendSet = -.05 * ((-72-winchPos)/(-72)); // modulate force w/ angle
-      } else {
-        extendSet = 0;
-      }
-
-    m_extendPrimaryMotor.set(extendSet);
-    m_winchMotor.set(winchSet);
-  }
+    m_extendPIDController.setReference(desExt, ControlType.kPosition);
+    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+    }
 
 
   public void logInit() {

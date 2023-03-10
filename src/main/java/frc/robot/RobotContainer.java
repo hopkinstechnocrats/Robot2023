@@ -59,6 +59,7 @@ public class RobotContainer {
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("Robot Container");
   private NetworkTable autoTable = inst.getTable("Auto");
   private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
@@ -70,6 +71,9 @@ public class RobotContainer {
     m_autoChooser.addOption("ScoreAuto", m_autoRoutines.placeAuto());
     m_autoChooser.addOption("null", null);
     SmartDashboard.putData(m_autoChooser);
+
+    table.getEntry("winch Desired Position").setDouble(0);
+    table.getEntry("extend Desired Position").setDouble(0);
       //Start logging
       DataLogManager.start();
       DataLog log = DataLogManager.getLog();
@@ -183,7 +187,9 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
 
-    return m_autoChooser.getSelected();
+    // return m_autoChooser.getSelected();
+    return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
+    table.getEntry("extend Desired Position").getDouble(0)), m_elevator);
    /* EXAMPLE AUTO CODE
     // Create config for trajectory
     TrajectoryConfig config =
