@@ -34,7 +34,7 @@ import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.TestFixtureConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorPositionConstants;
 import frc.robot.Constants.ElevatorConstants.EquationConstants;
-import frc.robot.Constants.ElevatorConstants.ExtenderConstatants;
+import frc.robot.Constants.ElevatorConstants.ExtenderConstants;
 import frc.robot.Constants.ElevatorConstants.WinchConstants;
 import lib.Loggable;
 
@@ -49,8 +49,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   double extendZeroSpeedDouble = 0;
   /** Creates a new SingleModuleTestFixture. */
 
-  private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstatants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private final CANSparkMax m_extendSecondaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstatants.kSecondaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax m_extendSecondaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstants.kSecondaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax m_winchMotor = new CANSparkMax(Constants.ElevatorConstants.WinchConstants.kMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
   //Asumes Hall Effect Encoder
   private final RelativeEncoder m_extendLeftMotorBuiltInEncoder = m_extendPrimaryMotor.getEncoder();
@@ -66,14 +66,6 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   public ElevatorSubsystem(){
     inst = NetworkTableInstance.getDefault();
     table = inst.getTable("Elevator");
-
-    table.getEntry("extend P").setDouble(0);
-    table.getEntry("extend I").setDouble(0);
-    table.getEntry("extend D").setDouble(0);
-    
-    table.getEntry("winch P").setDouble(0);
-    table.getEntry("winch I").setDouble(0);
-    table.getEntry("winch D").setDouble(0);
     
     // m_extendPrimaryMotor.restoreFactoryDefaults();
     // m_extendSecondaryMotor.restoreFactoryDefaults();
@@ -97,17 +89,25 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_winchMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
       m_winchMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-71.4);
   
-      m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstatants.kP);
-      m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstatants.kI);
-      m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstatants.kD);
-      // m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstatants.kFF);
-      // m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstatants.kIz);
-      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstatants.kMinOutput, Constants.ElevatorConstants.ExtenderConstatants.kMaxOutput);
-      // m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstatants.kMetersPerEncoderTick);
+      m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstants.kP);
+      m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstants.kI);
+      m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstants.kD);
+
+      m_extendPIDController.setSmartMotionMaxVelocity(ExtenderConstants.kMaxSpeedRPM, 0);
+      m_extendPIDController.setSmartMotionMaxAccel(ExtenderConstants.kMaxAccelerationRPMM, 0);
+
+      // m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstants.kFF);
+      // m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstants.kIz);
+      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstants.kMinOutput, Constants.ElevatorConstants.ExtenderConstants.kMaxOutput);
+      // m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstants.kMetersPerEncoderTick);
   
       m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
       m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
-      m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);
+      m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);      
+
+      m_winchPIDController.setSmartMotionMaxVelocity(WinchConstants.kMaxSpeedRPM, 0);
+      m_winchPIDController.setSmartMotionMaxAccel(WinchConstants.kMaxAccelerationRPMM, 0);
+
       // m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       // m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
       m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
@@ -194,7 +194,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
 
   if (winchPos < WinchConstants.k45DegreesRots) {
     // Dowwn
-    if (extendPos > ExtenderConstatants.kMaxExtentionFlat) {
+    if (extendPos > ExtenderConstants.kMaxExtentionFlat) {
       extendSet = extendSpeed;
       winchSet = winchSpeed;
       // Below Max Extend
@@ -284,16 +284,9 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
-    m_extendPIDController.setP(table.getEntry("extend P").getDouble(0));
-    m_extendPIDController.setI(table.getEntry("extend I").getDouble(0));
-    m_extendPIDController.setD(table.getEntry("extend D").getDouble(0));
-    
-    m_winchPIDController.setP(table.getEntry("winch P").getDouble(0));
-    m_winchPIDController.setI(table.getEntry("winch I").getDouble(0));
-    m_winchPIDController.setD(table.getEntry("winch D").getDouble(0));
 
-    m_extendPIDController.setReference(desExt, ControlType.kPosition);
-    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+    m_extendPIDController.setReference(desExt, ControlType.kSmartMotion);
+    m_winchPIDController.setReference(desWinch, ControlType.kSmartMotion);
     }
 
 
