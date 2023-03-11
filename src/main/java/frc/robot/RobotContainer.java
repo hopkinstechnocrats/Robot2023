@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import frc.robot.Constants.AutoConstants;
@@ -66,6 +67,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    CameraServer.startAutomaticCapture();
+    
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
     m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3, 0));
     m_autoChooser.addOption("ScoreAuto", m_autoRoutines.placeAuto());
