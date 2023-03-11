@@ -71,7 +71,11 @@ public class RobotContainer {
     
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
     m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3, 0));
-    m_autoChooser.addOption("ScoreAuto", m_autoRoutines.placeAuto());
+    m_autoChooser.addOption("Place Auto", m_autoRoutines.placeAuto());
+    m_autoChooser.addOption("Two Place Auto", m_autoRoutines.twoPlaceAuto());
+    m_autoChooser.addOption("Solely Place", m_autoRoutines.solelyPlace());
+    m_autoChooser.addOption("Place And Balance", m_autoRoutines.placeAndBalance());
+    m_autoChooser.addOption("Leave And Balance", m_autoRoutines.outAndBalance());
     m_autoChooser.addOption("null", null);
     SmartDashboard.putData(m_autoChooser);
 

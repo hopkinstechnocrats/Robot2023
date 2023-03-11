@@ -157,4 +157,27 @@ public class AutoRoutines {
         );
     }
 
+    public Command solelyPlace() {
+        return new SequentialCommandGroup(
+            new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(5),
+            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator).withTimeout(1)
+        );
+    }
+
+    public Command placeAndBalance() {
+        return new SequentialCommandGroup(
+            solelyPlace(),
+            autoBalance()
+        );
+    }
+
+    public Command outAndBalance() {
+        return new SequentialCommandGroup(
+            driveStraightAuto(8, 0).withTimeout(0),
+            driveStraightAuto(-4, 0).withTimeout(0),
+            new RunCommand(m_driveTrain::balance, m_driveTrain)
+            
+        );
+    }
+
 }
