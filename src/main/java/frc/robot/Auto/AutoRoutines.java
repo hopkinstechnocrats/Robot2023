@@ -103,7 +103,7 @@ public class AutoRoutines {
         return swerveContollerCommand;
     }
 
-                                    //Meters??? idk
+                                    //Meters
     public Command driveStraightAuto(double xDistance, double yDistance) {
         return new SequentialCommandGroup(
                         new InstantCommand(

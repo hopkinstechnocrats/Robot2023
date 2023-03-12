@@ -16,6 +16,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
@@ -95,10 +96,13 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
 
       m_extendPIDController.setSmartMotionMaxVelocity(ExtenderConstants.kMaxSpeedRPM, 0);
       m_extendPIDController.setSmartMotionMaxAccel(ExtenderConstants.kMaxAccelerationRPMM, 0);
-
-      // m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstants.kFF);
+      m_extendPIDController.setSmartMotionMinOutputVelocity(0, 0);
+      
+      m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstants.kFF);
+      // m_extendPIDController.setIAccum(ExtenderConstants.kIAccum);
       // m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstants.kIz);
-      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstants.kMinOutput, Constants.ElevatorConstants.ExtenderConstants.kMaxOutput);
+      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstants.kMinOutput, 
+      Constants.ElevatorConstants.ExtenderConstants.kMaxOutput);
       // m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstants.kMetersPerEncoderTick);
   
       m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
@@ -108,7 +112,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_winchPIDController.setSmartMotionMaxVelocity(WinchConstants.kMaxSpeedRPM, 0);
       m_winchPIDController.setSmartMotionMaxAccel(WinchConstants.kMaxAccelerationRPMM, 0);
 
-      // m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
+      m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       // m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
       m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
       // m_winchMotorBuiltInEncoder.setPositionConversionFactor(WinchConstants.kRadiansPerEncoderTick);
@@ -284,9 +288,11 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
+    table.getEntry("Ext Output").setDouble(m_extendPrimaryMotor.getOutputCurrent());
+    table.getEntry("Winch Output").setDouble(m_winchMotor.getOutputCurrent());
 
-    m_extendPIDController.setReference(desExt, ControlType.kSmartMotion);
-    m_winchPIDController.setReference(desWinch, ControlType.kSmartMotion);
+    m_extendPIDController.setReference(desExt, ControlType.kPosition);
+    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
     }
 
 

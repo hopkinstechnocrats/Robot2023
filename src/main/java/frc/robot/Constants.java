@@ -140,11 +140,11 @@ public final class Constants {
     public static final double kGroundPickWinch = 0;
 
     // Location on field of placed cube
-    public static final double kPlacedCubeX = 0;
+    public static final double kPlacedCubeX = 1;
     public static final double kPlacedCubeY = 0;
 
     // High cube shelf
-    public static final double kCubeScorePosX = 0;
+    public static final double kCubeScorePosX = 1;
     public static final double kCubeScorePosY = 0;
 
     public static final double kMaxSpeedMetersPerSecond = 1.125;
@@ -203,8 +203,8 @@ public final class Constants {
       public static final int kPrimaryMotorID = 17;
       public static final int kSecondaryMotorID = 15;
 
-      public static final double kMaxSpeedRPM = 1;
-      public static final double kMaxAccelerationRPMM = 1;
+      public static final double kMaxSpeedRPM = .1;
+      public static final double kMaxAccelerationRPMM = 6;
 
       public static final double kMaxExtentionFlat = -13.5;
     
@@ -213,9 +213,10 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = .4;
-      public static final double kMinOutput = -.4;
+      public static final double kMaxOutput = .2;
+      public static final double kMinOutput = -kMaxOutput;
       public static final double kMetersPerEncoderTick = 10; // TODO: set
+      public static final double kIAccum = 0;
     }
 
     public static final class WinchConstants {
@@ -231,8 +232,8 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = .5;
-      public static final double kMinOutput = -.5;
+      public static final double kMaxOutput = .1;
+      public static final double kMinOutput = -.1;
       public static final double kRadiansPerEncoderTick = 10;
     }
 
