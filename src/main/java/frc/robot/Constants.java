@@ -132,16 +132,28 @@ public final class Constants {
 
   public static final class AutoConstants {
     // High cone pole
-    public static final double kHighScoreExt = 0;
-    public static final double kHighScoreWinch = 0;
+    public static final double kHighScoreExt = -15.142;
+    public static final double kHighScoreWinch = -38.571;
+
+    // Mid cone pole
+    public static final double kMidScoreExt = -5.2857;
+    public static final double kMidScoreWinch = -34.4996;
 
     // Ground intake of cube
-    public static final double kGroundPickExt = 0;
-    public static final double kGroundPickWinch = 0;
+    public static final double kGroundPickExt = -0.71428;
+    public static final double kGroundPickWinch = -69.0018;
 
     // Location on field of placed cube
     public static final double kPlacedCubeX = 1;
     public static final double kPlacedCubeY = 0;
+
+    // Substation Cone Height
+    public static final double kConeSubStationExt = -12.047;
+    public static final double kConeSubStationWinch = -34.4996;
+
+    // Lowering onto cone Substation
+    public static final double kConeSSPounceExt = -12.0;
+    public static final double kConeSSPounceWinch = -36.49965;
 
     // High cube shelf
     public static final double kCubeScorePosX = 1;
