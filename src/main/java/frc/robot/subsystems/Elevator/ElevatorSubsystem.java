@@ -125,6 +125,11 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       // };
     
     //Clear pre-sets? - AJ
+
+    m_extendPrimaryMotor.burnFlash();
+    m_extendSecondaryMotor.burnFlash();
+    m_winchMotor.burnFlash();
+    
     
   }
 
@@ -288,12 +293,19 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
-    table.getEntry("Ext Output").setDouble(m_extendPrimaryMotor.getOutputCurrent());
-    table.getEntry("Winch Output").setDouble(m_winchMotor.getOutputCurrent());
+    table.getEntry("Ext Des Pos").setDouble(desExt);
+    table.getEntry("Winch Des Pos").setDouble(desWinch);
 
     m_extendPIDController.setReference(desExt, ControlType.kPosition);
     m_winchPIDController.setReference(desWinch, ControlType.kPosition);
-    }
+  }
+
+  public void stayElevatorAuto() {
+    double desExt = table.getEntry("Ext Des Pos").getDouble(0);
+    double desWinch = table.getEntry("Winch Des Pos").getDouble(0);
+    m_extendPIDController.setReference(desExt, ControlType.kPosition);
+    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+  }
 
 
   public void logInit() {

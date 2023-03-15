@@ -225,8 +225,8 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = .2;
-      public static final double kMinOutput = -kMaxOutput;
+      public static final double kMaxOutput = .1;
+      public static final double kMinOutput = -.25;
       public static final double kMetersPerEncoderTick = 10; // TODO: set
       public static final double kIAccum = 0;
     }
@@ -244,8 +244,8 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = .1;
-      public static final double kMinOutput = -.1;
+      public static final double kMaxOutput = .3;
+      public static final double kMinOutput = -.25;
       public static final double kRadiansPerEncoderTick = 10;
     }
 
