@@ -87,15 +87,15 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    -3*m_driverController.getLeftY(),
-                    -3*m_driverController.getLeftX(),
-                    3*m_driverController.getRightX(),
+                    -1.5*m_driverController.getLeftY(),
+                    -1.5*m_driverController.getLeftX(),
+                    1.5*m_driverController.getRightX(),
                m_driverController.getRightTriggerAxis()), m_robotDrive));
 
     m_elevator.setDefaultCommand(
         new RunCommand(
             () ->
-            m_elevator.MoveElevator(0.15*m_operatorController.getLeftY(), 0.25*m_operatorController.getRightY())
+            m_elevator.MoveElevator(0.1*m_operatorController.getLeftY(), 0.15*m_operatorController.getRightY())
             , m_elevator)
     );
     // singleModuleTestFixture.setDefaultCommand(
