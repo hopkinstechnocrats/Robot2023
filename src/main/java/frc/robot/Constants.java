@@ -186,6 +186,7 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
+    public static final double kThruBoreOffset = 1;
 
     public static final class EquationConstants {
       public static final double kIntakeOffsetFromArm = 1;
@@ -224,7 +225,7 @@ public final class Constants {
       public static final double kMaxExtentionFlat = -13.5;
     
       public static final double kP = 0.035;
-      public static final double kI = 0.00001;
+      public static final double kI = 0.0001;
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;

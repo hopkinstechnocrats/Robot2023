@@ -30,6 +30,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -176,6 +177,7 @@ public class RobotContainer {
       JoystickButton OXButton = new JoystickButton(m_operatorController, 3);
       JoystickButton OYButton = new JoystickButton(m_operatorController, 4);
       JoystickButton OBButton = new JoystickButton(m_operatorController, 2);
+      JoystickButton OStart = new JoystickButton(m_operatorController, 7);
 
       //Spin Cone out
       ORBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
@@ -189,6 +191,8 @@ public class RobotContainer {
       OAButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kConeSSPounceWinch, AutoConstants.kConeSSPounceExt), m_elevator));
 
       OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator));
+
+      OStart.onTrue(new RunCommand(() -> m_elevator.zeroEncoder()));
 
 
       POVButton ODPadTop = new POVButton(m_operatorController, 90);
@@ -213,7 +217,10 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
 
-    return m_autoChooser.getSelected();
+    return new SequentialCommandGroup(
+      new RunCommand(() -> m_elevator.MoveElevator(0, -0.1), m_elevator).withTimeout(1),
+      new InstantCommand(() -> m_elevator.zeroEncoder()),
+      m_autoChooser.getSelected());
     //return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
     //table.getEntry("extend Desired Position").getDouble(0)), m_elevator);
    /* EXAMPLE AUTO CODE

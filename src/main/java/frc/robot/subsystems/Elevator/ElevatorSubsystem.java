@@ -58,6 +58,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   //private final RelativeEncoder m_extendRightMotorBuiltInEncoder = m_extendRightMotor.getEncoder();
   private final RelativeEncoder m_winchMotorBuiltInEncoder = m_winchMotor.getEncoder();
 
+  private final DutyCycleEncoder m_ThruBoreEncoder = new DutyCycleEncoder(0);
+
   //Using Left Motor As Primary Motor
   private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
   private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
@@ -67,6 +69,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   public ElevatorSubsystem(){
     inst = NetworkTableInstance.getDefault();
     table = inst.getTable("Elevator");
+
+    m_ThruBoreEncoder.setDutyCycleRange(1, 1024);
     
     // m_extendPrimaryMotor.restoreFactoryDefaults();
     // m_extendSecondaryMotor.restoreFactoryDefaults();
@@ -289,7 +293,14 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
     //the other PID's will work the same way
+  }
 
+  public double getAbsPos() {
+     return m_ThruBoreEncoder.getAbsolutePosition() - ElevatorConstants.kThruBoreOffset;
+  }
+
+  public void zeroEncoder() {
+    m_winchMotorBuiltInEncoder.setPosition(0);
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
