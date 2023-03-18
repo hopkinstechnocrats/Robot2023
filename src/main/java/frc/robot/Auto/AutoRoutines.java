@@ -129,11 +129,12 @@ public class AutoRoutines {
         );
     }
 
-    public Command placeAuto() {        
-        return new SequentialCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(7), 
-            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator).withTimeout(1),
-            new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(4), 
-            driveStraightAuto(4, 0));
+    public Command placeCubeAuto() {        
+        return new SequentialCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
+            new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator).withTimeout(3),
+            new RunCommand(() -> m_manipulator.NoSpin(), m_manipulator).withTimeout(.1),
+            new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(4),
+            driveStraightAuto(-4, 0));
     }
 
     public Command twoPlaceAuto() {

@@ -71,7 +71,7 @@ public class RobotContainer {
     
     m_autoChooser.setDefaultOption("Balance Auto", m_autoRoutines.autoBalance());
     m_autoChooser.addOption("Drive Forward", m_autoRoutines.driveStraightAuto(3.0, 0.0));
-    m_autoChooser.addOption("Place Auto", m_autoRoutines.placeAuto());
+    m_autoChooser.addOption("Place Auto", m_autoRoutines.placeCubeAuto());
     m_autoChooser.addOption("Two Place Auto", m_autoRoutines.twoPlaceAuto());
     m_autoChooser.addOption("Solely Place", m_autoRoutines.solelyPlace());
     m_autoChooser.addOption("Place And Balance", m_autoRoutines.placeAndBalance());
@@ -213,9 +213,9 @@ public class RobotContainer {
   
   public Command getAutonomousCommand() {
 
-    // return m_autoChooser.getSelected();
-    return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
-    table.getEntry("extend Desired Position").getDouble(0)), m_elevator);
+    return m_autoChooser.getSelected();
+    //return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
+    //table.getEntry("extend Desired Position").getDouble(0)), m_elevator);
    /* EXAMPLE AUTO CODE
     // Create config for trajectory
     TrajectoryConfig config =
