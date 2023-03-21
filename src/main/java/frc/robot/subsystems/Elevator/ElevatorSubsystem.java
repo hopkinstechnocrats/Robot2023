@@ -48,6 +48,9 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   double winchZeroSpeedDouble = 0;
   boolean extendZeroSpeedBool = false;
   double extendZeroSpeedDouble = 0;
+
+  double winchDesiredSetpoint = 0;
+  double extendDesiredSetpoint = 0;
   /** Creates a new SingleModuleTestFixture. */
 
   private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -199,7 +202,8 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
 }
 
 public void moveElevatorUnSafe(double extendSpeed, double winchSpeed) {
-  
+  m_extendPrimaryMotor.set(extendSpeed);
+  m_winchMotor.set(winchSpeed);
 }
   
 
@@ -292,6 +296,8 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
     
     table.getEntry("Extend Encoder Rotations").setDouble(m_extendLeftMotorBuiltInEncoder.getPosition());
     table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
+    table.getEntry("Extend Setpoint").setDouble(extendDesiredSetpoint);
+    table.getEntry("Winch Setpoint").setDouble(winchDesiredSetpoint);
 
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
@@ -308,18 +314,16 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
-    table.getEntry("Ext Des Pos").setDouble(desExt);
-    table.getEntry("Winch Des Pos").setDouble(desWinch);
+    extendDesiredSetpoint = desExt;
+    winchDesiredSetpoint = desWinch;
 
     m_extendPIDController.setReference(desExt, ControlType.kPosition);
     m_winchPIDController.setReference(desWinch, ControlType.kPosition);
   }
 
   public void stayElevatorAuto() {
-    double desExt = table.getEntry("Ext Des Pos").getDouble(0);
-    double desWinch = table.getEntry("Winch Des Pos").getDouble(0);
-    m_extendPIDController.setReference(desExt, ControlType.kPosition);
-    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+    m_extendPIDController.setReference(extendDesiredSetpoint, ControlType.kPosition);
+    m_winchPIDController.setReference(winchDesiredSetpoint, ControlType.kPosition);
   }
 
 
