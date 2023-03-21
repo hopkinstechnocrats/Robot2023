@@ -197,6 +197,10 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
     double reqEncoderTicksRotation = (reqMotorRevsRotation * ElevatorConstants.EquationConstants.kEncoderTicksPerRevRotation);
     return reqEncoderTicksRotation;
 }
+
+public void moveElevatorUnSafe(double extendSpeed, double winchSpeed) {
+  
+}
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){

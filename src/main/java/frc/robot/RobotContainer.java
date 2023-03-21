@@ -177,7 +177,8 @@ public class RobotContainer {
       JoystickButton OXButton = new JoystickButton(m_operatorController, 3);
       JoystickButton OYButton = new JoystickButton(m_operatorController, 4);
       JoystickButton OBButton = new JoystickButton(m_operatorController, 2);
-      JoystickButton OStart = new JoystickButton(m_operatorController, 7);
+      JoystickButton OStart = new JoystickButton(m_operatorController, 8);
+      JoystickButton OBack = new JoystickButton(m_operatorController, 7);
 
       //Spin Cone out
       ORBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
@@ -192,7 +193,9 @@ public class RobotContainer {
 
       OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator));
 
-      OStart.onTrue(new RunCommand(() -> m_elevator.zeroEncoder()));
+      OStart.onTrue(new InstantCommand(() -> m_elevator.zeroEncoder()));
+
+      OBack.whileTrue(new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, -.1), m_elevator));
 
 
       POVButton ODPadTop = new POVButton(m_operatorController, 90);
@@ -218,7 +221,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     return new SequentialCommandGroup(
-      new RunCommand(() -> m_elevator.MoveElevator(0, -0.1), m_elevator).withTimeout(1),
+      new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, -0.1), m_elevator).withTimeout(1),
       new InstantCommand(() -> m_elevator.zeroEncoder()),
       m_autoChooser.getSelected());
     //return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
