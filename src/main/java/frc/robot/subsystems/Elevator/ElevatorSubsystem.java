@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,6 +67,12 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   //Using Left Motor As Primary Motor
   private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
   private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
+
+  private final Constraints m_extendContraints = new Constraints(ExtenderConstants.kMaxSpeedRPM, ExtenderConstants.kMaxAccelerationRPMM);
+  private final Constraints m_winchContraints = new Constraints(WinchConstants.kMaxSpeedRPM, WinchConstants.kMaxAccelerationRPMM);
+
+  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, ExtenderConstants.kI, ExtenderConstants.kD, m_extendContraints);
+  private final ProfiledPIDController m_winchProfiledPIDController = new ProfiledPIDController(WinchConstants.kP, WinchConstants.kI, WinchConstants.kD, m_winchContraints);
 
   // private final double[][] positionSetpoints;
 
@@ -324,6 +331,14 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   public void stayElevatorAuto() {
     m_extendPIDController.setReference(extendDesiredSetpoint, ControlType.kPosition);
     m_winchPIDController.setReference(winchDesiredSetpoint, ControlType.kPosition);
+  }
+
+  public void moveElevatorAutoProfile(double desWinch, double desExt) {
+    double extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
+    double winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
+
+    m_extendPrimaryMotor.set(extendSet);
+    m_winchMotor.set(winchSet);
   }
 
 
