@@ -135,7 +135,7 @@ public final class Constants {
     public static final double kHighScoreExt = -15.142;
     public static final double kHighScoreWinch = -38.571;
     // High cube pole
-    public static final double kHighScoreCubeExt = -16.0;
+    public static final double kHighScoreCubeExt = -16.5;
     public static final double kHighScoreCubeWinch = -38.571;
 
     // Mid cone pole
