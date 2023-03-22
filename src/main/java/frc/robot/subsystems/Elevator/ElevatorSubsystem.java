@@ -71,7 +71,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   private final Constraints m_extendContraints = new Constraints(ExtenderConstants.kMaxSpeedRPM, ExtenderConstants.kMaxAccelerationRPMM);
   private final Constraints m_winchContraints = new Constraints(WinchConstants.kMaxSpeedRPM, WinchConstants.kMaxAccelerationRPMM);
 
-  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, ExtenderConstants.kI, ExtenderConstants.kD, m_extendContraints);
+  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, 0.0001, ExtenderConstants.kD, m_extendContraints);
   private final ProfiledPIDController m_winchProfiledPIDController = new ProfiledPIDController(WinchConstants.kP, WinchConstants.kI, WinchConstants.kD, m_winchContraints);
 
   // private final double[][] positionSetpoints;
@@ -336,6 +336,9 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   public void moveElevatorAutoProfile(double desWinch, double desExt) {
     double extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
     double winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
+
+    extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
+    winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
 
     m_extendPrimaryMotor.set(extendSet);
     m_winchMotor.set(winchSet);

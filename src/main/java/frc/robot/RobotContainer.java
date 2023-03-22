@@ -189,13 +189,13 @@ public class RobotContainer {
       //Spin Cube in
       OYButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator)); 
 
-      OAButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kConeSSPounceWinch, AutoConstants.kConeSSPounceExt), m_elevator));
+      OAButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSSPounceWinch, AutoConstants.kConeSSPounceExt), m_elevator));
 
-      OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator));
+      OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator));
 
       OStart.onTrue(new InstantCommand(() -> m_elevator.zeroEncoder()));
 
-      OBack.whileTrue(new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, -.1), m_elevator));
+      OBack.whileTrue(new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, .1), m_elevator));
 
 
       POVButton ODPadTop = new POVButton(m_operatorController, 90);
