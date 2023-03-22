@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,6 +49,9 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   double winchZeroSpeedDouble = 0;
   boolean extendZeroSpeedBool = false;
   double extendZeroSpeedDouble = 0;
+
+  double winchDesiredSetpoint = 0;
+  double extendDesiredSetpoint = 0;
   /** Creates a new SingleModuleTestFixture. */
 
   private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -58,15 +62,25 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   //private final RelativeEncoder m_extendRightMotorBuiltInEncoder = m_extendRightMotor.getEncoder();
   private final RelativeEncoder m_winchMotorBuiltInEncoder = m_winchMotor.getEncoder();
 
+  private final DutyCycleEncoder m_ThruBoreEncoder = new DutyCycleEncoder(0);
+
   //Using Left Motor As Primary Motor
   private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
   private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
+
+  private final Constraints m_extendContraints = new Constraints(ExtenderConstants.kMaxSpeedRPM, ExtenderConstants.kMaxAccelerationRPMM);
+  private final Constraints m_winchContraints = new Constraints(WinchConstants.kMaxSpeedRPM, WinchConstants.kMaxAccelerationRPMM);
+
+  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, ExtenderConstants.kI, ExtenderConstants.kD, m_extendContraints);
+  private final ProfiledPIDController m_winchProfiledPIDController = new ProfiledPIDController(WinchConstants.kP, WinchConstants.kI, WinchConstants.kD, m_winchContraints);
 
   // private final double[][] positionSetpoints;
 
   public ElevatorSubsystem(){
     inst = NetworkTableInstance.getDefault();
     table = inst.getTable("Elevator");
+
+    m_ThruBoreEncoder.setDutyCycleRange(1, 1024);
     
     // m_extendPrimaryMotor.restoreFactoryDefaults();
     // m_extendSecondaryMotor.restoreFactoryDefaults();
@@ -193,6 +207,11 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
     double reqEncoderTicksRotation = (reqMotorRevsRotation * ElevatorConstants.EquationConstants.kEncoderTicksPerRevRotation);
     return reqEncoderTicksRotation;
 }
+
+public void moveElevatorUnSafe(double extendSpeed, double winchSpeed) {
+  m_extendPrimaryMotor.set(extendSpeed);
+  m_winchMotor.set(winchSpeed);
+}
   
 
 public void MoveElevator(double extendSpeed, double winchSpeed){
@@ -284,27 +303,42 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
     
     table.getEntry("Extend Encoder Rotations").setDouble(m_extendLeftMotorBuiltInEncoder.getPosition());
     table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
+    table.getEntry("Extend Setpoint").setDouble(extendDesiredSetpoint);
+    table.getEntry("Winch Setpoint").setDouble(winchDesiredSetpoint);
 
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
     //the other PID's will work the same way
+  }
 
+  public double getAbsPos() {
+     return m_ThruBoreEncoder.getAbsolutePosition() - ElevatorConstants.kThruBoreOffset;
+  }
+
+  public void zeroEncoder() {
+    m_winchMotorBuiltInEncoder.setPosition(0);
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
-    table.getEntry("Ext Des Pos").setDouble(desExt);
-    table.getEntry("Winch Des Pos").setDouble(desWinch);
+    extendDesiredSetpoint = desExt;
+    winchDesiredSetpoint = desWinch;
 
     m_extendPIDController.setReference(desExt, ControlType.kPosition);
     m_winchPIDController.setReference(desWinch, ControlType.kPosition);
   }
 
   public void stayElevatorAuto() {
-    double desExt = table.getEntry("Ext Des Pos").getDouble(0);
-    double desWinch = table.getEntry("Winch Des Pos").getDouble(0);
-    m_extendPIDController.setReference(desExt, ControlType.kPosition);
-    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+    m_extendPIDController.setReference(extendDesiredSetpoint, ControlType.kPosition);
+    m_winchPIDController.setReference(winchDesiredSetpoint, ControlType.kPosition);
+  }
+
+  public void moveElevatorAutoProfile(double desWinch, double desExt) {
+    double extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
+    double winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
+
+    m_extendPrimaryMotor.set(extendSet);
+    m_winchMotor.set(winchSet);
   }
 
 
