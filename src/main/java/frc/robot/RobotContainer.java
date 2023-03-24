@@ -199,16 +199,16 @@ public class RobotContainer {
 
 
       POVButton ODPadTop = new POVButton(m_operatorController, 90);
-      ODPadTop.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator));
+      ODPadTop.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator));
       
       POVButton ODPadRight = new POVButton(m_operatorController, 180);
-      ODPadRight.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kMidScoreWinch, AutoConstants.kMidScoreExt), m_elevator));
+      ODPadRight.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kMidScoreWinch, AutoConstants.kMidScoreExt), m_elevator));
       
       POVButton ODPadBottom = new POVButton(m_operatorController, 270);
-      ODPadBottom.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kGroundPickWinch, AutoConstants.kGroundPickExt), m_elevator));
+      ODPadBottom.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kGroundPickWinch, AutoConstants.kGroundPickExt), m_elevator));
       
       POVButton ODPadLeft = new POVButton(m_operatorController, 0);
-      ODPadLeft.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kConeSubStationWinch, AutoConstants.kConeSubStationExt), m_elevator));
+      ODPadLeft.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSubStationWinch, AutoConstants.kConeSubStationExt), m_elevator));
       
   }
 
@@ -221,7 +221,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     return new SequentialCommandGroup(
-      new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, -0.1), m_elevator).withTimeout(1),
+      new RunCommand(() -> m_elevator.moveElevatorUnSafe(0,  0.1), m_elevator).withTimeout(1),
       new InstantCommand(() -> m_elevator.zeroEncoder()),
       m_autoChooser.getSelected());
     //return new RunCommand(() -> m_elevator.moveElevatorAuto(table.getEntry("winch Desired Position").getDouble(0), 
