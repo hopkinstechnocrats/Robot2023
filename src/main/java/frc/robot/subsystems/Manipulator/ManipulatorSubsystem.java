@@ -21,6 +21,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     NetworkTable table;
     NetworkTableEntry setpointLog;
     NetworkTableEntry currentVelLog;
+    double setDirection;
     
     public ManipulatorSubsystem () {
         inst = NetworkTableInstance.getDefault();
@@ -44,12 +45,20 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     }
 
-    public void SpinCube(Boolean direction) {
-        if (direction) {
-            Spin(ManipulatorConstants.kCubeSpeedIn);
-        } else {
-            Spin(ManipulatorConstants.kCubeSpeedOut);
-        }
+    public void SpinCube() {
+            Spin(setDirection * ManipulatorConstants.kCubeSpeedIn);
+    }
+
+    public void spinConeOut() {
+        setDirection = -1;
+    }
+
+    public void spinConeIn() {
+        setDirection = 1;
+    }
+
+    public void stopSpin() {
+        setDirection = 0;
     }
 
     public void SpinCone(Boolean direction) {

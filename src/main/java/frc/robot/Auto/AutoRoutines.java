@@ -124,41 +124,43 @@ public class AutoRoutines {
 
     public Command autoBalance() {
         return new SequentialCommandGroup(
-            driveStraightAuto(3.75, 0),
-            new RunCommand(m_driveTrain::balance, m_driveTrain)
+            driveStraightAuto(-3, 0),
+            new RunCommand(() -> m_driveTrain.defence(), m_driveTrain)
+            //new RunCommand(m_driveTrain::balance, m_driveTrain)
         );
     }
 
     public Command placeCubeAuto() {        
-        return new SequentialCommandGroup(new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
-            new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator).withTimeout(3),
-            new RunCommand(() -> m_manipulator.NoSpin(), m_manipulator).withTimeout(.1),
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4),
+        return new SequentialCommandGroup(
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
+            new RunCommand(() -> m_manipulator.spinConeIn(), m_manipulator).withTimeout(3),
+            new InstantCommand(() -> m_manipulator.stopSpin()),
+            new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(4),
             driveStraightAuto(-4, 0));
     }
 
     public Command twoPlaceAuto() {
         return new SequentialCommandGroup(
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(0),
+            new RunCommand(() -> m_elevator.moveElevatorAuto(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(0),
             new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator).withTimeout(0),
             new ParallelCommandGroup(
                 new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kGroundPickWinch, AutoConstants.kGroundPickExt), m_elevator).withTimeout(0),
                 driveStraightAuto(AutoConstants.kPlacedCubeX, AutoConstants.kPlacedCubeY),
-                new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator).withTimeout(0)
+                new InstantCommand(() -> m_manipulator.spinConeOut())
             ),
-            new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator).withTimeout(0),
+            new InstantCommand(() -> m_manipulator.spinConeIn()),
             new ParallelCommandGroup(
                 new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(0),
                 driveStraightAuto(AutoConstants.kCubeScorePosX, AutoConstants.kCubeScorePosY)
             ),
-            new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator)
+            new InstantCommand(() -> m_manipulator.spinConeIn())
         );
     }
 
     public Command solelyPlace() {
         return new SequentialCommandGroup(
             new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(5),
-            new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator).withTimeout(1)
+            new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator).withTimeout(1)
         );
     }
 

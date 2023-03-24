@@ -181,15 +181,15 @@ public class RobotContainer {
       JoystickButton OBack = new JoystickButton(m_operatorController, 7);
 
       //Spin Cone out
-      ORBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator)); 
+      ORBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeOut())); 
       //Spin Cone in
-      OLBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
+      OLBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeIn())); 
       //Spin Cube out
       OXButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kMidReadyPosWinch, AutoConstants.kMidReadyPosExt), m_elevator)); 
       //Spin Cube in
       OYButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighReadyPosWinch, AutoConstants.kHighReadyPosExt), m_elevator)); 
 
-      OAButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSSPounceWinch, AutoConstants.kConeSSPounceExt), m_elevator));
+      OAButton.onTrue(new InstantCommand(() -> m_manipulator.stopSpin()));
 
       OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator));
 

@@ -227,7 +227,7 @@ public final class Constants {
       public static final int kPrimaryMotorID = 17;
       public static final int kSecondaryMotorID = 15;
 
-      public static final double kMaxSpeedRPM = 5;
+      public static final double kMaxSpeedRPM = 6;
       public static final double kMaxAccelerationRPMM = kMaxSpeedRPM*60;
 
       public static final double kMaxExtentionFlat = -13.5;
@@ -246,7 +246,7 @@ public final class Constants {
     public static final class WinchConstants {
       public static final int kMotorID = 18;
 
-      public static final double kMaxSpeedRPM = 20;
+      public static final double kMaxSpeedRPM = 25;
       public static final double kMaxAccelerationRPMM = kMaxSpeedRPM*30;
 
       public static final double k45DegreesRots = -40;
