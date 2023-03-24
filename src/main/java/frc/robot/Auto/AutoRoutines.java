@@ -157,8 +157,8 @@ public class AutoRoutines {
 
     public Command solelyPlace() {
         return new SequentialCommandGroup(
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator).withTimeout(5),
-            new RunCommand(() -> m_manipulator.SpinCone(false), m_manipulator).withTimeout(1)
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(5),
+            new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator).withTimeout(1)
         );
     }
 

@@ -286,6 +286,10 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
   m_winchMotor.set(winchSet);
 }
 
+public void teleopCont(double extSpeed, double winchSpeed) {
+  
+}
+
   
 
 

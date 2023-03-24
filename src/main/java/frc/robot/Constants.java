@@ -162,6 +162,14 @@ public final class Constants {
     public static final double kCubeScorePosX = 1;
     public static final double kCubeScorePosY = 0;
 
+    // Go above everything
+    public static final double kHighReadyPosWinch = - 28;
+    public static final double kHighReadyPosExt = -15.4;
+
+    // Go above mid
+    public static final double kMidReadyPosWinch = -28;
+    public static final double kMidReadyPosExt = -5.2857;
+
     public static final double kMaxSpeedMetersPerSecond = 1.125;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;

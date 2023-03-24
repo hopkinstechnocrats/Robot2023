@@ -185,9 +185,9 @@ public class RobotContainer {
       //Spin Cone in
       OLBButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator)); 
       //Spin Cube out
-      OXButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(false), m_manipulator)); 
+      OXButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kMidReadyPosWinch, AutoConstants.kMidReadyPosExt), m_elevator)); 
       //Spin Cube in
-      OYButton.whileTrue(new RunCommand(() -> m_manipulator.SpinCube(true), m_manipulator)); 
+      OYButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighReadyPosWinch, AutoConstants.kHighReadyPosExt), m_elevator)); 
 
       OAButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSSPounceWinch, AutoConstants.kConeSSPounceExt), m_elevator));
 
