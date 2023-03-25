@@ -125,12 +125,12 @@ public class AutoRoutines {
 
     public Command autoBalance() {
         return new SequentialCommandGroup(
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
-            new InstantCommand(() -> m_manipulator.spinConeOut(), m_manipulator),
-            new RunCommand(() -> m_manipulator.Spin(), m_manipulator).withTimeout(3),
-            new InstantCommand(() -> m_manipulator.stopSpin()),
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4),
-            driveStraightAuto(-2.8, 0),
+            // new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
+            // new InstantCommand(() -> m_manipulator.spinConeOut(), m_manipulator),
+            // new RunCommand(() -> m_manipulator.Spin(), m_manipulator).withTimeout(3),
+            // new InstantCommand(() -> m_manipulator.stopSpin()),
+            // new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4),
+            driveStraightAuto(-3, 0),
             new RunCommand(() -> m_driveTrain.defence(), m_driveTrain));
             //new RunCommand(m_driveTrain::balance, m_driveTrain)
     }
@@ -165,9 +165,11 @@ public class AutoRoutines {
 
     public Command solelyPlace() {
         return new SequentialCommandGroup(
-            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(5),
-            new RunCommand(() -> m_manipulator.SpinCone(true), m_manipulator).withTimeout(1)
-        );
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
+            new InstantCommand(() -> m_manipulator.spinConeOut(), m_manipulator),
+            new RunCommand(() -> m_manipulator.Spin(), m_manipulator).withTimeout(3),
+            new InstantCommand(() -> m_manipulator.stopSpin()),
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4));
     }
 
     public Command placeAndBalance() {

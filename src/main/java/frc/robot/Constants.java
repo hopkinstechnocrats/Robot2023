@@ -173,7 +173,7 @@ public final class Constants {
 
     // Substation Cone Height
     public static final double kConeSubStationExt = -14;
-    public static final double kConeSubStationWinch = -34.49965;
+    public static final double kConeSubStationWinch = -34;
 
     // Lowering onto cone Substation
     public static final double kConeSSPounceExt = -12.0;
@@ -254,7 +254,7 @@ public final class Constants {
       public static final double kMaxExtentionFlat = -13.5;
     
       public static final double kP = 0.06;
-      public static final double kI = 0.001;
+      public static final double kI = 0.0004;
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
@@ -277,8 +277,8 @@ public final class Constants {
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
-      public static final double kMaxOutput = .2;
-      public static final double kMinOutput = -.2;
+      public static final double kMaxOutput = .75;
+      public static final double kMinOutput = -.5;
       public static final double kRadiansPerEncoderTick = 10;
     }
 

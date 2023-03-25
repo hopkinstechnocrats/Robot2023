@@ -74,7 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   private final Constraints m_extendContraints = new Constraints(ExtenderConstants.kMaxSpeedRPM, ExtenderConstants.kMaxAccelerationRPMM);
   private final Constraints m_winchContraints = new Constraints(WinchConstants.kMaxSpeedRPM, WinchConstants.kMaxAccelerationRPMM);
 
-  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, 0.2, ExtenderConstants.kD, m_extendContraints); // .2 I
+  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, 0.15, ExtenderConstants.kD, m_extendContraints); // .2 I
   private final ProfiledPIDController m_winchProfiledPIDController = new ProfiledPIDController(WinchConstants.kP, WinchConstants.kI, WinchConstants.kD, m_winchContraints);
 
   // private final double[][] positionSetpoints;
@@ -324,7 +324,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
   }
 
   public void zeroEncoder() {
-    m_winchMotorBuiltInEncoder.setPosition(0);
+    m_winchMotorBuiltInEncoder.setPosition(-4.714280128479004);
   }
 
   public void moveElevatorAuto(double desWinch, double desExt) {
