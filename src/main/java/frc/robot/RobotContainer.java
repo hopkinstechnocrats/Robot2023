@@ -133,6 +133,9 @@ public class RobotContainer {
       JoystickButton BButton = new JoystickButton(m_driverController, 2);
       JoystickButton XButton = new JoystickButton(m_driverController, 3);
       JoystickButton YButton = new JoystickButton(m_driverController, 4);
+      JoystickButton LBButton = new JoystickButton(m_driverController, 5);
+
+      // LBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSubStationWinch, AutoConstants.kConeSubStationExt), m_elevator));
       
       // 
       POVButton DPadTop = new POVButton(m_driverController, 90);
@@ -198,16 +201,16 @@ public class RobotContainer {
       OBack.whileTrue(new RunCommand(() -> m_elevator.moveElevatorUnSafe(0, .1), m_elevator));
 
 
-      POVButton ODPadTop = new POVButton(m_operatorController, 90);
+      POVButton ODPadTop = new POVButton(m_operatorController, 0);
       ODPadTop.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreWinch, AutoConstants.kHighScoreExt), m_elevator));
       
-      POVButton ODPadRight = new POVButton(m_operatorController, 180);
+      POVButton ODPadRight = new POVButton(m_operatorController, 90);
       ODPadRight.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kMidScoreWinch, AutoConstants.kMidScoreExt), m_elevator));
       
-      POVButton ODPadBottom = new POVButton(m_operatorController, 270);
+      POVButton ODPadBottom = new POVButton(m_operatorController, 180);
       ODPadBottom.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kGroundPickWinch, AutoConstants.kGroundPickExt), m_elevator));
       
-      POVButton ODPadLeft = new POVButton(m_operatorController, 0);
+      POVButton ODPadLeft = new POVButton(m_operatorController, 270);
       ODPadLeft.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kConeSubStationWinch, AutoConstants.kConeSubStationExt), m_elevator));
       
   }

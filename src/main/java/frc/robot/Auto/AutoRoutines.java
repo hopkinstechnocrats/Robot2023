@@ -124,13 +124,16 @@ public class AutoRoutines {
 
     public Command autoBalance() {
         return new SequentialCommandGroup(
-            driveStraightAuto(-3, 0),
-            new RunCommand(() -> m_driveTrain.defence(), m_driveTrain)
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
+            new RunCommand(() -> m_manipulator.spinConeIn(), m_manipulator).withTimeout(3),
+            new InstantCommand(() -> m_manipulator.stopSpin()),
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4),
+            driveStraightAuto(-2.8, 0),
+            new RunCommand(() -> m_driveTrain.defence(), m_driveTrain));
             //new RunCommand(m_driveTrain::balance, m_driveTrain)
-        );
     }
 
-    public Command placeCubeAuto() {        
+    public Command placeCubeAuto() {
         return new SequentialCommandGroup(
             new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
             new RunCommand(() -> m_manipulator.spinConeIn(), m_manipulator).withTimeout(3),

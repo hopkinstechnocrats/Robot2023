@@ -151,8 +151,8 @@ public final class Constants {
     public static final double kPlacedCubeY = 0;
 
     // Substation Cone Height
-    public static final double kConeSubStationExt = -12.047;
-    public static final double kConeSubStationWinch = -34.4996;
+    public static final double kConeSubStationExt = -14;
+    public static final double kConeSubStationWinch = -34.49965;
 
     // Lowering onto cone Substation
     public static final double kConeSSPounceExt = -12.0;
