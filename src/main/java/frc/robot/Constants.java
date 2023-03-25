@@ -131,6 +131,26 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
+    public static final class thruBoreEncoder {
+      public static final double kHighScoreWinch = .148786;
+      // High cube pole
+      public static final double kHighScoreCubeWinch = .148786;
+
+      // Mid cone pole
+      public static final double kMidScoreWinch = .130136785;
+
+      // Ground intake of cube
+      public static final double kGroundPickWinch = -.02482242;
+
+      // Substation Cone Height
+      public static final double kConeSubStationWinch = .130136785;
+
+      // Go above everything
+      public static final double kHighReadyPosWinch = .120537278;
+
+      // Go above mid
+      public static final double kMidReadyPosWinch = -.121498628;
+    }
     // High cone pole
     public static final double kHighScoreExt = -15.142;
     public static final double kHighScoreWinch = -38.571;
@@ -194,7 +214,7 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final double kThruBoreOffset = 1;
+    public static final double kThruBoreOffset = 0.9691640742291019;
 
     public static final class EquationConstants {
       public static final double kIntakeOffsetFromArm = 1;
@@ -246,13 +266,13 @@ public final class Constants {
     public static final class WinchConstants {
       public static final int kMotorID = 18;
 
-      public static final double kMaxSpeedRPM = 25;
+      public static final double kMaxSpeedRPM = 5;
       public static final double kMaxAccelerationRPMM = kMaxSpeedRPM*30;
 
       public static final double k45DegreesRots = -40;
 
-      public static final double kP = 0.08;
-      public static final double kI = 0.00001;
+      public static final double kP = 0.08*350;
+      public static final double kI = 0.00001*350;
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;

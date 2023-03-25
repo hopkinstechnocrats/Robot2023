@@ -65,7 +65,7 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   //private final RelativeEncoder m_extendRightMotorBuiltInEncoder = m_extendRightMotor.getEncoder();
   private final RelativeEncoder m_winchMotorBuiltInEncoder = m_winchMotor.getEncoder();
 
-  private final DutyCycleEncoder m_ThruBoreEncoder = new DutyCycleEncoder(0);
+  private final DutyCycleEncoder m_ThruBoreEncoder = new DutyCycleEncoder(9);
 
   //Using Left Motor As Primary Motor
   //private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
@@ -82,8 +82,6 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   public ElevatorSubsystem(){
     inst = NetworkTableInstance.getDefault();
     table = inst.getTable("Elevator");
-
-    m_ThruBoreEncoder.setDutyCycleRange(1, 1024);
     
     // m_extendPrimaryMotor.restoreFactoryDefaults();
     // m_extendSecondaryMotor.restoreFactoryDefaults();
@@ -314,7 +312,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     table.getEntry("Winch Setpoint").setDouble(winchDesiredSetpoint);
     table.getEntry("Controller Output Extender").setDouble(extendSet);
     table.getEntry("Controller Output Winch").setDouble(winchSet);
-
+    table.getEntry("Wiinch ThruBore Rads").setDouble(getAbsPos());
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
@@ -322,7 +320,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
   }
 
   public double getAbsPos() {
-     return m_ThruBoreEncoder.getAbsolutePosition() - ElevatorConstants.kThruBoreOffset;
+     return m_ThruBoreEncoder.get() - ElevatorConstants.kThruBoreOffset + .0;
   }
 
   public void zeroEncoder() {
@@ -354,7 +352,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
 
   public void moveElevatorAutoProfile(double desWinch, double desExt) {
     extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
-    winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
+    winchSet = -1*m_winchProfiledPIDController.calculate(getAbsPos(), desWinch);
 
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
