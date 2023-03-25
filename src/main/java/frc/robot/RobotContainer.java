@@ -119,7 +119,7 @@ public class RobotContainer {
     //             singleModuleTestFixture)
     // );
 
-    m_manipulator.setDefaultCommand(new RunCommand(() -> m_manipulator.NoSpin(), m_manipulator));
+    m_manipulator.setDefaultCommand(new RunCommand(() -> m_manipulator.Spin(), m_manipulator));
   }
 
   /**
@@ -181,9 +181,9 @@ public class RobotContainer {
       JoystickButton OBack = new JoystickButton(m_operatorController, 7);
 
       //Spin Cone out
-      ORBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeOut())); 
+      ORBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeIn())); 
       //Spin Cone in
-      OLBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeIn())); 
+      OLBButton.onTrue(new InstantCommand(() -> m_manipulator.spinConeOut())); 
       //Spin Cube out
       OXButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kMidReadyPosWinch, AutoConstants.kMidReadyPosExt), m_elevator)); 
       //Spin Cube in

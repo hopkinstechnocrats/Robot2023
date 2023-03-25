@@ -21,7 +21,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     NetworkTable table;
     NetworkTableEntry setpointLog;
     NetworkTableEntry currentVelLog;
-    double setDirection;
+    double setDirection = 0;
     
     public ManipulatorSubsystem () {
         inst = NetworkTableInstance.getDefault();
@@ -45,7 +45,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     }
 
-    public void SpinCube() {
+    public void Spin() {
             Spin(setDirection * ManipulatorConstants.kCubeSpeedIn);
     }
 

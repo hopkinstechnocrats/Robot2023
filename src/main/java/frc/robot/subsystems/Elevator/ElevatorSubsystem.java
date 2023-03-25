@@ -52,6 +52,9 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
 
   double winchDesiredSetpoint = 0;
   double extendDesiredSetpoint = 0;
+
+  double extendSet;
+  double winchSet;
   /** Creates a new SingleModuleTestFixture. */
 
   private final CANSparkMax m_extendPrimaryMotor = new CANSparkMax(Constants.ElevatorConstants.ExtenderConstants.kPrimaryMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -65,13 +68,13 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
   private final DutyCycleEncoder m_ThruBoreEncoder = new DutyCycleEncoder(0);
 
   //Using Left Motor As Primary Motor
-  private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
-  private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
+  //private final SparkMaxPIDController m_extendPIDController = m_extendPrimaryMotor.getPIDController();
+  //private final SparkMaxPIDController m_winchPIDController = m_winchMotor.getPIDController();
 
   private final Constraints m_extendContraints = new Constraints(ExtenderConstants.kMaxSpeedRPM, ExtenderConstants.kMaxAccelerationRPMM);
   private final Constraints m_winchContraints = new Constraints(WinchConstants.kMaxSpeedRPM, WinchConstants.kMaxAccelerationRPMM);
 
-  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, .3, ExtenderConstants.kD, m_extendContraints);
+  private final ProfiledPIDController m_extendProfiledPIDController = new ProfiledPIDController(ExtenderConstants.kP, 0.2, ExtenderConstants.kD, m_extendContraints); // .2 I
   private final ProfiledPIDController m_winchProfiledPIDController = new ProfiledPIDController(WinchConstants.kP, WinchConstants.kI, WinchConstants.kD, m_winchContraints);
 
   // private final double[][] positionSetpoints;
@@ -90,8 +93,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
     // m_extendSecondaryMotor.setIdleMode(IdleMode.kBrake);
     m_extendSecondaryMotor.follow(m_extendPrimaryMotor, true);
 
-      m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
-      m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
+      //m_extendPIDController.setFeedbackDevice(m_extendLeftMotorBuiltInEncoder);
+      //m_winchPIDController.setFeedbackDevice(m_winchMotorBuiltInEncoder);
 
       m_extendPrimaryMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
       m_extendPrimaryMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -104,31 +107,31 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
       m_winchMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
       m_winchMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-71.4);
   
-      m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstants.kP);
-      m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstants.kI);
-      m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstants.kD);
+      //m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstants.kP);
+      //m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstants.kI);
+      //m_extendPIDController.setD(Constants.ElevatorConstants.ExtenderConstants.kD);
 
-      m_extendPIDController.setSmartMotionMaxVelocity(ExtenderConstants.kMaxSpeedRPM, 0);
-      m_extendPIDController.setSmartMotionMaxAccel(ExtenderConstants.kMaxAccelerationRPMM, 0);
-      m_extendPIDController.setSmartMotionMinOutputVelocity(0, 0);
+      // m_extendPIDController.setSmartMotionMaxVelocity(ExtenderConstants.kMaxSpeedRPM, 0);
+      // m_extendPIDController.setSmartMotionMaxAccel(ExtenderConstants.kMaxAccelerationRPMM, 0);
+      // m_extendPIDController.setSmartMotionMinOutputVelocity(0, 0);
       
-      m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstants.kFF);
+      // m_extendPIDController.setFF(Constants.ElevatorConstants.ExtenderConstants.kFF);
       // m_extendPIDController.setIAccum(ExtenderConstants.kIAccum);
       // m_extendPIDController.setIZone(Constants.ElevatorConstants.ExtenderConstants.kIz);
-      m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstants.kMinOutput, 
-      Constants.ElevatorConstants.ExtenderConstants.kMaxOutput);
+      // m_extendPIDController.setOutputRange(Constants.ElevatorConstants.ExtenderConstants.kMinOutput, 
+      // Constants.ElevatorConstants.ExtenderConstants.kMaxOutput);
       // m_extendLeftMotorBuiltInEncoder.setPositionConversionFactor(ExtenderConstants.kMetersPerEncoderTick);
   
-      m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
-      m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
-      m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);      
+      // m_winchPIDController.setI(Constants.ElevatorConstants.WinchConstants.kI);
+      // m_winchPIDController.setP(Constants.ElevatorConstants.WinchConstants.kP);
+      // m_winchPIDController.setD(Constants.ElevatorConstants.WinchConstants.kD);      
 
-      m_winchPIDController.setSmartMotionMaxVelocity(WinchConstants.kMaxSpeedRPM, 0);
-      m_winchPIDController.setSmartMotionMaxAccel(WinchConstants.kMaxAccelerationRPMM, 0);
+      // m_winchPIDController.setSmartMotionMaxVelocity(WinchConstants.kMaxSpeedRPM, 0);
+      // m_winchPIDController.setSmartMotionMaxAccel(WinchConstants.kMaxAccelerationRPMM, 0);
 
-      m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
+      // m_winchPIDController.setFF(Constants.ElevatorConstants.WinchConstants.kFF);
       // m_winchPIDController.setIZone(Constants.ElevatorConstants.WinchConstants.kIz);
-      m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
+      // m_winchPIDController.setOutputRange(Constants.ElevatorConstants.WinchConstants.kMinOutput, Constants.ElevatorConstants.WinchConstants.kMaxOutput);
       // m_winchMotorBuiltInEncoder.setPositionConversionFactor(WinchConstants.kRadiansPerEncoderTick);
       
       // positionSetpoints = new double[][] {
@@ -214,77 +217,77 @@ public void moveElevatorUnSafe(double extendSpeed, double winchSpeed) {
 }
   
 
-public void MoveElevator(double extendSpeed, double winchSpeed){
-  double winchSet = 0;
-  double extendSet = 0;
-  double winchPos = m_winchMotorBuiltInEncoder.getPosition();
-  double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
+// public void MoveElevator(double extendSpeed, double winchSpeed){
+//   double winchSet = 0;
+//   double extendSet = 0;
+//   double winchPos = m_winchMotorBuiltInEncoder.getPosition();
+//   double extendPos = m_extendLeftMotorBuiltInEncoder.getPosition();
 
-  if (winchPos < WinchConstants.k45DegreesRots) {
-    // Dowwn
-    if (extendPos > ExtenderConstants.kMaxExtentionFlat) {
-      extendSet = extendSpeed;
-      winchSet = winchSpeed;
-      // Below Max Extend
-    } else {
-      // Above Max Extend
-      if (winchSpeed <= 0){
-        // Retracting winch
-        winchSet = winchSpeed;
-      } else {
-        // Extending winch
-        winchSet = .25;
-      }
-      if (extendSpeed <= 0) {
-      // Extending
-      // Don't move
-      extendSet = 0;
-    } else {
-      // Retracting
-      extendSet = extendSpeed;
-    }
-  }
- } else {
-    // Above reaching angle, so okay to extend as much as we want
-    winchSet = winchSpeed;
-    extendSet = extendSpeed;
-  }
+//   if (winchPos < WinchConstants.k45DegreesRots) {
+//     // Dowwn
+//     if (extendPos > ExtenderConstants.kMaxExtentionFlat) {
+//       extendSet = extendSpeed;
+//       winchSet = winchSpeed;
+//       // Below Max Extend
+//     } else {
+//       // Above Max Extend
+//       if (winchSpeed <= 0){
+//         // Retracting winch
+//         winchSet = winchSpeed;
+//       } else {
+//         // Extending winch
+//         winchSet = .25;
+//       }
+//       if (extendSpeed <= 0) {
+//       // Extending
+//       // Don't move
+//       extendSet = 0;
+//     } else {
+//       // Retracting
+//       extendSet = extendSpeed;
+//     }
+//   }
+//  } else {
+//     // Above reaching angle, so okay to extend as much as we want
+//     winchSet = winchSpeed;
+//     extendSet = extendSpeed;
+//   }
 
-  if (Math.abs(winchSpeed) < .1) {
-    if (winchZeroSpeedBool) {
-      if (winchPos < winchZeroSpeedDouble) {
-        winchSet = .1* ((-72-winchPos)/(-72)); // Modulate force w/ angle
-      } else {
-        winchSet = 0;
-      }
+//   if (Math.abs(winchSpeed) < .1) {
+//     if (winchZeroSpeedBool) {
+//       if (winchPos < winchZeroSpeedDouble) {
+//         winchSet = .1* ((-72-winchPos)/(-72)); // Modulate force w/ angle
+//       } else {
+//         winchSet = 0;
+//       }
     
-  } else {
-    winchZeroSpeedBool = true;
-    winchZeroSpeedDouble = winchPos;
-  }
-} else {
-  winchZeroSpeedBool = false;
-}
+//   } else {
+//     winchZeroSpeedBool = true;
+//     winchZeroSpeedDouble = winchPos;
+//   }
+// } else {
+//   winchZeroSpeedBool = false;
+// }
 
-  if (Math.abs(extendSpeed) < .1) {
-    if (extendZeroSpeedBool) {
-      if (extendPos > extendZeroSpeedDouble) {
-        extendSet = -.05 * ((-72-winchPos)/(-72)); // modulate force w/ angle
-      } else {
-        extendSet = 0;
-      }
+//   if (Math.abs(extendSpeed) < .1) {
+//     if (extendZeroSpeedBool) {
+//       if (extendPos > extendZeroSpeedDouble) {
+//         extendSet = -.05 * ((-72-winchPos)/(-72)); // modulate force w/ angle
+//       } else {
+//         extendSet = 0;
+//       }
     
-  } else {
-    extendZeroSpeedBool = true;
-    extendZeroSpeedDouble = extendPos;
-  }
-}  else {
-  extendZeroSpeedBool = false;
-}
+//   } else {
+//     extendZeroSpeedBool = true;
+//     extendZeroSpeedDouble = extendPos;
+//   }
+// }  else {
+//   extendZeroSpeedBool = false;
+// }
 
-  m_extendPrimaryMotor.set(extendSet);
-  m_winchMotor.set(winchSet);
-}
+//   m_extendPrimaryMotor.set(extendSet);
+//   m_winchMotor.set(winchSet);
+// }
 
 public void teleopCont(double extSpeed, double winchSpeed) {
   
@@ -309,6 +312,8 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
     table.getEntry("Extend Setpoint").setDouble(extendDesiredSetpoint);
     table.getEntry("Winch Setpoint").setDouble(winchDesiredSetpoint);
+    table.getEntry("Controller Output Extender").setDouble(extendSet);
+    table.getEntry("Controller Output Winch").setDouble(winchSet);
 
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
@@ -328,21 +333,28 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     extendDesiredSetpoint = desExt;
     winchDesiredSetpoint = desWinch;
 
-    m_extendPIDController.setReference(desExt, ControlType.kPosition);
-    m_winchPIDController.setReference(desWinch, ControlType.kPosition);
+    table.getEntry("hi").setString("HI");
+
+    // m_extendPIDController.setReference(desExt, ControlType.kPosition);
+    // m_winchPIDController.setReference(desWinch, ControlType.kPosition);
   }
 
   public void stayElevatorAuto() {
-    double extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), extendDesiredSetpoint);
-    double winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), winchDesiredSetpoint);
+    extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), extendDesiredSetpoint);
+    winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), winchDesiredSetpoint);
+    
+    extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
+    winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
 
     m_extendPrimaryMotor.set(extendSet);
     m_winchMotor.set(winchSet);
+
+    System.out.println("HIIIIII");
   }
 
   public void moveElevatorAutoProfile(double desWinch, double desExt) {
-    double extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
-    double winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
+    extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
+    winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
 
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;

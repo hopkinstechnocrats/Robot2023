@@ -135,8 +135,8 @@ public class AutoRoutines {
             new RunCommand(() -> m_elevator.moveElevatorAutoProfile(AutoConstants.kHighScoreCubeWinch, AutoConstants.kHighScoreCubeExt), m_elevator).withTimeout(3), 
             new RunCommand(() -> m_manipulator.spinConeIn(), m_manipulator).withTimeout(3),
             new InstantCommand(() -> m_manipulator.stopSpin()),
-            new RunCommand(() -> m_elevator.moveElevatorAuto(0, 0), m_elevator).withTimeout(4),
-            driveStraightAuto(-4, 0));
+            new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator).withTimeout(4),
+            driveStraightAuto(-3, 0));
     }
 
     public Command twoPlaceAuto() {

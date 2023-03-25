@@ -287,7 +287,7 @@ public final class Constants {
     public static final double kD = 0;
     public static final double kF = 0;
 
-    public static final double kCubeSpeedIn = 1;
+    public static final double kCubeSpeedIn = .6;
     public static final double kCubeSpeedOut = -1;
     public static final double kConeSpeedIn = -.6;
     public static final double kConeSpeedOut = .6;
