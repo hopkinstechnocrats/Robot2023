@@ -352,7 +352,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
 
   public void moveElevatorAutoProfile(double desWinch, double desExt) {
     extendSet = m_extendProfiledPIDController.calculate(m_extendLeftMotorBuiltInEncoder.getPosition(), desExt);
-    winchSet = -1*m_winchProfiledPIDController.calculate(getAbsPos(), desWinch);
+    winchSet = m_winchProfiledPIDController.calculate(m_winchMotorBuiltInEncoder.getPosition(), desWinch);
 
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;

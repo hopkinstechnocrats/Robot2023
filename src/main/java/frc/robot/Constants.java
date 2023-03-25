@@ -145,6 +145,7 @@ public final class Constants {
       // Substation Cone Height
       public static final double kConeSubStationWinch = .130136785;
 
+
       // Go above everything
       public static final double kHighReadyPosWinch = .120537278;
 
@@ -266,13 +267,13 @@ public final class Constants {
     public static final class WinchConstants {
       public static final int kMotorID = 18;
 
-      public static final double kMaxSpeedRPM = 5;
+      public static final double kMaxSpeedRPM = 25;
       public static final double kMaxAccelerationRPMM = kMaxSpeedRPM*30;
 
       public static final double k45DegreesRots = -40;
 
-      public static final double kP = 0.08*350;
-      public static final double kI = 0.00001*350;
+      public static final double kP = 0.08;
+      public static final double kI = 0.00001;
       public static final double kD = 0;
       public static final double kFF = 0;
       public static final double kIz = 0;
@@ -307,10 +308,10 @@ public final class Constants {
     public static final double kD = 0;
     public static final double kF = 0;
 
-    public static final double kCubeSpeedIn = .6;
+    public static final double kCubeSpeedIn = 1;
     public static final double kCubeSpeedOut = -1;
-    public static final double kConeSpeedIn = -.6;
-    public static final double kConeSpeedOut = .6;
+    public static final double kConeSpeedIn = -1;
+    public static final double kConeSpeedOut = 1;
     public static final double kMaxSpeedRPM = 20;
   }
 }
