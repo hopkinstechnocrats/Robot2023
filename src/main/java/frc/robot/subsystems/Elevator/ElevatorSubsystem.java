@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -320,7 +321,7 @@ public void teleopCont(double extSpeed, double winchSpeed) {
   }
 
   public double getAbsPos() {
-     return m_ThruBoreEncoder.get() - ElevatorConstants.kThruBoreOffset + .0;
+     return m_ThruBoreEncoder.getAbsolutePosition() - ElevatorConstants.kThruBoreOffset + .0;
   }
 
   public void zeroEncoder() {
@@ -357,6 +358,9 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
 
+    extendSet = MathUtil.clamp(-1, 1, extendSet);
+    winchSet = MathUtil.clamp(-1, 1, winchSet);
+    
     m_extendPrimaryMotor.set(extendSet);
     m_winchMotor.set(winchSet);
   }
