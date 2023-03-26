@@ -79,9 +79,6 @@ public class RobotContainer {
     m_autoChooser.addOption("Leave And Balance", m_autoRoutines.outAndBalance());
     m_autoChooser.addOption("null", null);
     SmartDashboard.putData(m_autoChooser);
-
-    table.getEntry("winch Desired Position").setDouble(0);
-    table.getEntry("extend Desired Position").setDouble(0);
       //Start logging
       DataLogManager.start();
       DataLog log = DataLogManager.getLog();
@@ -220,6 +217,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+
+  // public void log() {
+  // }
   
   public Command getAutonomousCommand() {
 

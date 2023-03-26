@@ -43,7 +43,6 @@ public class SwerveModule {
     desiredState = new SwerveModuleState(0, new Rotation2d(0));
     this.corners = corners;
     this.offset = turningEncoderOffset;
-    
   }
 
   public void periodic() {
