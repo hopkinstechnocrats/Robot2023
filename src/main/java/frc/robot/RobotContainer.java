@@ -191,7 +191,7 @@ public class RobotContainer {
 
       OAButton.onTrue(new InstantCommand(() -> m_manipulator.stopSpin()));
 
-      OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(0, 0), m_elevator));
+      OBButton.whileTrue(new RunCommand(() -> m_elevator.moveElevatorAutoProfile(-4.714280128479004, 0), m_elevator));
 
       OStart.onTrue(new InstantCommand(() -> m_elevator.zeroEncoder()));
 

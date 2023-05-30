@@ -31,7 +31,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
         manipulatorMotor = new CANSparkMax(ManipulatorConstants.kMotorPort, MotorType.kBrushless);
         manipulatorEncoder = manipulatorMotor.getEncoder();
         manipulatorEncoder.setVelocityConversionFactor(ManipulatorConstants.kGearRatio);
-        manipulatorMotor.setSmartCurrentLimit(15, 30);
+        manipulatorMotor.setSmartCurrentLimit(25, 35);
 
         manipulatorMotor.burnFlash(); // Save settings even after brownout
 

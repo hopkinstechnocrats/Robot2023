@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.Elevator;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -105,6 +106,8 @@ public class ElevatorSubsystem extends SubsystemBase implements Loggable {
 
       m_winchMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
       m_winchMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)-71.4);
+
+      m_winchMotor.setSmartCurrentLimit(50);
   
       //m_extendPIDController.setP(Constants.ElevatorConstants.ExtenderConstants.kP);
       //m_extendPIDController.setI(Constants.ElevatorConstants.ExtenderConstants.kI);
@@ -211,8 +214,8 @@ public double winchEncoderTicks(double desiredRopeLength, double currentRopeLeng
 }
 
 public void moveElevatorUnSafe(double extendSpeed, double winchSpeed) {
-  m_extendPrimaryMotor.set(extendSpeed);
-  m_winchMotor.set(winchSpeed);
+  // m_extendPrimaryMotor.set(extendSpeed);
+  // m_winchMotor.set(winchSpeed);
 }
   
 
@@ -314,6 +317,8 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     table.getEntry("Controller Output Extender").setDouble(extendSet);
     table.getEntry("Controller Output Winch").setDouble(winchSet);
     table.getEntry("Wiinch ThruBore Rads").setDouble(getAbsPos());
+    table.getEntry("Winch Output Duty").setDouble(m_winchMotor.getAppliedOutput());
+    table.getEntry("Winch Output Power").setDouble(m_winchMotor.getOutputCurrent());
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
     //still need to get correct values and get things from which button.
@@ -345,10 +350,14 @@ public void teleopCont(double extSpeed, double winchSpeed) {
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
 
+    if (winchSet > WinchConstants.kMaxOutput) {
+      winchSet = WinchConstants.kMaxOutput;
+    } else if (winchSet < WinchConstants.kMinOutput) {
+      winchSet = WinchConstants.kMinOutput;
+    }
+
     m_extendPrimaryMotor.set(extendSet);
     m_winchMotor.set(winchSet);
-
-    System.out.println("HIIIIII");
   }
 
   public void moveElevatorAutoProfile(double desWinch, double desExt) {
@@ -357,13 +366,16 @@ public void teleopCont(double extSpeed, double winchSpeed) {
 
     extendDesiredSetpoint = m_extendProfiledPIDController.getSetpoint().position;
     winchDesiredSetpoint = m_winchProfiledPIDController.getSetpoint().position;
-
-    extendSet = MathUtil.clamp(-1, 1, extendSet);
-    winchSet = MathUtil.clamp(-1, 1, winchSet);
     
+    if (winchSet > WinchConstants.kMaxOutput) {
+      winchSet = WinchConstants.kMaxOutput;
+    } else if (winchSet < WinchConstants.kMinOutput) {
+      winchSet = WinchConstants.kMinOutput;
+    }
+
     m_extendPrimaryMotor.set(extendSet);
     m_winchMotor.set(winchSet);
-  }
+    }
 
 
   public void logInit() {
