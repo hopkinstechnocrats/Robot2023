@@ -255,6 +255,7 @@ public void MoveElevator(double extendSpeed, double winchSpeed){
     
     table.getEntry("Extend Encoder Rotations").setDouble(m_extendLeftMotorBuiltInEncoder.getPosition());
     table.getEntry("Winch Encoder Rotations").setDouble(m_winchMotorBuiltInEncoder.getPosition());
+    table.getEntry("Controller output winch").setDouble(winchSet);
 
     // Don't put moving things in periodic, use it for updating inputs. Make a seperate command for moving things.
   //   m_extendPIDController.setReference(positionSetpoints[][], ControlType.kPosition);
